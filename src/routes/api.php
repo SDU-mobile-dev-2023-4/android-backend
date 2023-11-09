@@ -22,11 +22,11 @@ use Illuminate\Support\Facades\Hash;
  * Routes protected by sanctum
  */
 Route::group(['namespace' => 'App\Http\Controllers\api'], function () {
-    Route::apiResource('/groups', 'Group\GroupController');
-    Route::apiResource('/users', 'api\user\UserController');
-    Route::apiResource('/expenses', 'api\expense\ExpenseController');
+    Route::apiResource('/groups',   'Group\GroupController');
+    Route::apiResource('/users',    'user\UserController');
+    Route::apiResource('/expenses', 'expense\ExpenseController');
 
-    Route::post('/groups/{group}/add-user', 'api\Group\GroupController@addUserToGroup');
+    Route::post  ('/groups/{group}/add-user',    'api\Group\GroupController@addUserToGroup');
     Route::delete('/groups/{group}/remove-user', 'api\Group\GroupController@removeUserFromGroup');
 
 })->middleware(['auth:sanctum']);
@@ -37,6 +37,7 @@ Route::group(['namespace' => 'App\Http\Controllers\api'], function () {
  */
 Route::group(['namespace' => 'App\Http\Controllers\api'], function () {
     Route::post('/register', 'User\AuthenticationController@register');
+    Route::post('/login',    'User\AuthenticationController@login');
 });
 
 
