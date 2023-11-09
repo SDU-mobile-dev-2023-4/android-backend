@@ -10,7 +10,7 @@ trait TraitShow {
      * Display the specified resource.
      *
      * @OA\Get(
-     *      path="/api/groups/{group}",
+     *      path="/api/groups/{id}",
      *      tags={"Groups"},
      *      summary="Get a group",
      *      description="Returns a single group with all its information",
@@ -44,6 +44,7 @@ trait TraitShow {
      *      @OA\Response(
      *          response=404,
      *          description="Group not found",
+     *          @OA\JsonContent(ref="#/components/schemas/NotFoundError")
      *      )
      * )
      */
