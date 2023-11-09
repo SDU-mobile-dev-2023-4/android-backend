@@ -37,7 +37,7 @@ Route::middleware('auth:sanctum')->group(function (){
  * DETTE ENDPOINT BRUGES TIL AT OPRETTE EN BRUGER
  */
 Route::group(['namespace' => 'App\Http\Controllers\api'], function () {
-    Route::post('/register', 'User\UserController@store');
+    Route::post('/register', 'User\AuthenticationController@register');
 
     #Route::post("/register", function() {
     #    echo "Hejsa";
