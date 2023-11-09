@@ -60,6 +60,16 @@ use Illuminate\Routing\Controller as BaseController;
  *          example="Forbidden"
  *      )
  *  )
+ *  @OA\Schema(
+ *      schema="NotFoundError",
+ *      description="Not Found - The resource you are looking for was not found",
+ *      @OA\Property(
+ *          property="message",
+ *          type="string",
+ *          example="Not Found"
+ *      )
+ *  )
+ *  
  */
 class Controller extends BaseController
 {
