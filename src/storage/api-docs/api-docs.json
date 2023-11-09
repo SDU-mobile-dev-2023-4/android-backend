@@ -1,0 +1,206 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "WeShare API",
+        "version": "1.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000/api",
+            "description": "WeShare API Server"
+        }
+    ],
+    "paths": {
+        "/api": {},
+        "/api/groups": {
+            "get": {
+                "tags": [
+                    "Groups"
+                ],
+                "summary": "Get all groups",
+                "description": "Get all groups",
+                "operationId": "1b4513003380db94cc7af5d598aaf0f5",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "properties": {
+                                                "": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/Group"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/groups/{group}": {
+            "get": {
+                "tags": [
+                    "Groups"
+                ],
+                "summary": "Get a group",
+                "description": "Returns a single group with all its information",
+                "operationId": "show",
+                "parameters": [
+                    {
+                        "name": "group",
+                        "in": "path",
+                        "description": "Group id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Group response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Group"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "You are not authenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UnauthorizedError"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "You are not authorized to view this group",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ForbiddenError"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Group not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "ErrorResponse": {
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "example": "The given data was invalid."
+                    },
+                    "errors": {
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "UnauthorizedError": {
+                "description": "Unauthorized - Access token is missing or invalid",
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "example": "Unauthorized"
+                    }
+                },
+                "type": "object"
+            },
+            "ForbiddenError": {
+                "description": "Forbidden - You don't have permission to access this resource",
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "example": "Forbidden"
+                    }
+                },
+                "type": "object"
+            },
+            "Group": {
+                "title": "Group schema",
+                "properties": {
+                    "id": {
+                        "description": "Group id",
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "name": {
+                        "description": "Group name",
+                        "type": "string",
+                        "example": "Group 1"
+                    }
+                },
+                "type": "object"
+            },
+            "User": {
+                "title": "User schema",
+                "properties": {
+                    "id": {
+                        "description": "User id",
+                        "type": "integer",
+                        "example": 1,
+                        "nullable": false
+                    },
+                    "name": {
+                        "description": "User name",
+                        "type": "string",
+                        "example": "John Doe",
+                        "nullable": false
+                    },
+                    "email": {
+                        "description": "User email",
+                        "type": "string",
+                        "example": "demo@example.com",
+                        "nullable": false
+                    },
+                    "created_at": {
+                        "description": "User created at",
+                        "type": "string",
+                        "example": "2021-01-01 00:00:00",
+                        "nullable": false
+                    },
+                    "updated_at": {
+                        "description": "User updated at",
+                        "type": "string",
+                        "example": "2021-01-01 00:00:00",
+                        "nullable": false
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer"
+            }
+        }
+    }
+}
