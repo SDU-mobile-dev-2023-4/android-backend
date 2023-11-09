@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Sanctum\HasApiTokens;
 
 /**
  * @OA\Schema(
@@ -39,7 +40,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Group extends Model
 {
-    use HasFactory;
+    use HasApiTokens, HasFactory;
 
 
     protected $fillable = [
