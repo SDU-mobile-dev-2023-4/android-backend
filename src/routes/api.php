@@ -18,30 +18,25 @@ use Illuminate\Support\Facades\Hash;
 |
 */
 
-#Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-#    return $request->user();
-#});
-
-Route::middleware('auth:sanctum')->group(function (){
-    Route::apiResource('/groups', 'api\group\GroupController');
+/**
+ * Routes protected by sanctum
+ */
+Route::group(['namespace' => 'App\Http\Controllers\api'], function () {
+    Route::apiResource('/groups', 'Group\GroupController');
     Route::apiResource('/users', 'api\user\UserController');
     Route::apiResource('/expenses', 'api\expense\ExpenseController');
 
     Route::post('/groups/{group}/add-user', 'api\Group\GroupController@addUserToGroup');
     Route::delete('/groups/{group}/remove-user', 'api\Group\GroupController@removeUserFromGroup');
 
-});
+})->middleware(['auth:sanctum']);
 
 
 /**
- * DETTE ENDPOINT BRUGES TIL AT OPRETTE EN BRUGER
+ * Routes not protected by sanctum
  */
 Route::group(['namespace' => 'App\Http\Controllers\api'], function () {
     Route::post('/register', 'User\AuthenticationController@register');
-
-    #Route::post("/register", function() {
-    #    echo "Hejsa";
-    #});
 });
 
 
