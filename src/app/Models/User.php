@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
 
 /**
@@ -98,5 +99,15 @@ class User extends Authenticatable
     public function expenses()
     {
         return $this->hasMany(Expense::class);
+    }
+
+    /**
+     * Method automaticly encrypts user passwords when a user is created.
+     *
+     * @param $value
+     * @return void
+     */
+    public function setPasswordAttribute($value) {
+        $this->attributes['password'] = Hash::make($value);
     }
 }
