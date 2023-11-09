@@ -1,6 +1,6 @@
 version: '3'
 
-name: weshare-backend
+name: uomi
 
 services:
     laravel:
@@ -13,9 +13,9 @@ services:
             - '${VITE_PORT:-5173}:${VITE_PORT:-5173}'
         environment:
             DB_HOST: mysql
-            DB_USERNAME: ${DB_USERNAME:-config}
-            DB_DATABASE: ${DB_DATABASE:-config}
-            DB_PASSWORD: ${DB_PASSWORD:-config}
+            DB_USERNAME: ${DB_USERNAME:-uomi}
+            DB_DATABASE: ${DB_DATABASE:-uomi}
+            DB_PASSWORD: ${DB_PASSWORD:-uomi}
             TZ: ${TIMEZONE}
         volumes:
             - ./src:/var/www/html
@@ -34,11 +34,11 @@ services:
         ports:
             - '${FORWARD_DB_PORT:-3306}:3306'
         environment:
-            MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-uomi}
             MYSQL_ROOT_HOST: '%'
-            MYSQL_DATABASE: '${DB_DATABASE}'
-            MYSQL_USER: '${DB_USERNAME}'
-            MYSQL_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_DATABASE: ${DB_DATABASE:-uomi}
+            MYSQL_USER: ${DB_USERNAME:-uomi}
+            MYSQL_PASSWORD: ${DB_PASSWORD:-uomi}
             MYSQL_ALLOW_EMPTY_PASSWORD: 1
         volumes:
             - 'mysql:/var/lib/mysql'
