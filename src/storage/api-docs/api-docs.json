@@ -46,7 +46,7 @@
                 }
             }
         },
-        "/api/groups/{group}": {
+        "/api/groups/{id}": {
             "get": {
                 "tags": [
                     "Groups"
@@ -98,7 +98,14 @@
                         }
                     },
                     "404": {
-                        "description": "Group not found"
+                        "description": "Group not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NotFoundError"
+                                }
+                            }
+                        }
                     }
                 },
                 "security": [
@@ -139,6 +146,16 @@
                     "message": {
                         "type": "string",
                         "example": "Forbidden"
+                    }
+                },
+                "type": "object"
+            },
+            "NotFoundError": {
+                "description": "Not Found - The resource you are looking for was not found",
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "example": "Not Found"
                     }
                 },
                 "type": "object"
