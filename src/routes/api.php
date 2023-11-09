@@ -20,8 +20,9 @@ use Illuminate\Support\Facades\Hash;
 
 /**
  * Routes protected by sanctum
+ * auth:sanctum has been removed, as the login verification is done in the CheckAuthentication middleware
  */
-Route::group(['namespace' => 'App\Http\Controllers\api'], function () {
+Route::group(['namespace' => 'App\Http\Controllers\api', 'middleware' => [ 'check-auth']], function () {
     Route::apiResource('/groups',   'Group\GroupController');
     Route::apiResource('/users',    'user\UserController');
     Route::apiResource('/expenses', 'expense\ExpenseController');
@@ -29,7 +30,7 @@ Route::group(['namespace' => 'App\Http\Controllers\api'], function () {
     Route::post  ('/groups/{group}/add-user',    'api\Group\GroupController@addUserToGroup');
     Route::delete('/groups/{group}/remove-user', 'api\Group\GroupController@removeUserFromGroup');
 
-})->middleware(['auth:sanctum']);
+});
 
 
 /**
