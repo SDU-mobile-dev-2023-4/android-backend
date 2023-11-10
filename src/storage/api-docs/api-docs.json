@@ -12,6 +12,79 @@
     ],
     "paths": {
         "/api": {},
+        "/api/groups/{id}/add-user": {
+            "post": {
+                "tags": [
+                    "Groups"
+                ],
+                "summary": "Add a user to a group",
+                "description": "This endpoint is used to add a user to a group.",
+                "operationId": "addUserToGroup",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The id of the group",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "The email of the user to add to the group",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User added to group successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User added to group successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BadRequestError"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ForbiddenError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/groups/{id}": {
             "get": {
                 "tags": [
@@ -534,6 +607,16 @@
                     },
                     "errors": {
                         "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "BadRequestError": {
+                "description": "Bad Request - The request was invalid or cannot be served. The exact error should be explained in the error payload. E.g. „The JSON is not valid“",
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "example": "Bad Request"
                     }
                 },
                 "type": "object"
