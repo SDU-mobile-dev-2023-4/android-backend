@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\api\User;
 
+use App\Helper\Sanitizer;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\api\User\RegisterRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -20,18 +21,27 @@ class AuthenticationController extends Controller
      *          in="query",
      *          required=true,
      *          description="The name of the user",
+     *          example="John Doe",
      *          @OA\Schema(
-     *            type="string"
+     *            type="string",
+     *            minLength=1,
+     *            maxLength=255,
+     *            example="John Doe",
+     *            nullable=false
      *          ),
      *      ),
      *      @OA\Parameter(
      *          name="email",
      *          in="query",
      *          required=true,
-     *          description="The email of the user",
+     *          description="The email of the user. Must be unique.",
      *          @OA\Schema(
      *              type="string",
-     *              format="email"
+     *              format="email",
+     *              example="john.doe@example.com",
+     *              nullable=false,
+     *              minLength=2,
+     *              maxLength=255
      *          ),
      *      ),
      *      @OA\Parameter(
@@ -41,7 +51,11 @@ class AuthenticationController extends Controller
      *          description="The password of the user",
      *          @OA\Schema(
      *              type="string",
-     *              format="password"
+     *              format="password",
+     *              minLength=6,
+     *              maxLength=255,
+     *              example="password",
+     *              nullable=false
      *          ),    
      *      ),
      *      @OA\Parameter(
@@ -50,75 +64,59 @@ class AuthenticationController extends Controller
      *          required=true,
      *          description="The name of the device",
      *          @OA\Schema(
-     *              type="string"
+     *              type="string",
+     *              minLength=2,
+     *              maxLength=255,
+     *              example="John's iPhone",
+     *              nullable=false
      *          )
      *      ),
      *      @OA\Response(
      *          response=200,
      *          description="User created successfully",
      *          @OA\JsonContent(
-     *              @OA\Property(
-     *                  property="name",
-     *                  type="string",
-     *                  example="John Doe",
-     *              ),
-     *              @OA\Property(
-     *                  property="email",
-     *                  type="string",
-     *                  example="john.doe@example.com",
-     *              ),
-     *              @OA\Property(
-     *                  property="updated_at",
-     *                  type="string",
-     *                  format="date-time"
-     *              ),
-     *              @OA\Property(
-     *                  property="created_at",
-     *                  type="string",
-     *                  format="date-time"
-     *              ),
-     *              @OA\Property(
-     *                  property="id",
-     *                  type="integer",
-     *                  format="int64",
-     *                  example=1,
-     *              ),
+     *              allOf={
+     *                  @OA\Schema(
+     *                    ref="#/components/schemas/User"
+     *                  ),
+     *                  @OA\Schema(
+     *                    @OA\Property(
+     *                      property="token",
+     *                      type="string",
+     *                      example="1|eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."
+     *                    )
+     *                  )
+     *              }
      *          ),
      *      ),
      *      @OA\Response(
-     *          response=409,
-     *          description="Email already exists",
-     *          @OA\JsonContent(
-     *              @OA\Property(
-     *                  property="message",
-     *                  type="string",
-     *                  example="Email already exists",
-     *                  description="The message returned when the email already exists"
-     *              ),
-     *          ),
+     *        response=422,
+     *        description="Bad Request - One or more errors with the input data",
+     *        @OA\JsonContent(ref="#/components/schemas/BadRequestError")
      *      )
      * )
      */
     public function register(RegisterRequest $request)
-    { 
-        // Check if there is a user with the email
-        if (User::where('email', $request->email)->exists()) {
-            return response(["message" => "Email already exists"], 409);
-        }
+    {
+        // Get input data
+        $data = $request->validated();
 
-
-
+        // Create user
         $user = new User;
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = $request->password;
+        $user->name = Sanitizer::sanitize($data['name']);
+        $user->email = Sanitizer::sanitize($data['email']);
+        $user->password = Sanitizer::sanitize($data['password']);
         $user->save();
 
-        $return = $user->toArray();
-        $return['token'] = $user->createToken($request->device_name)->plainTextToken;
+        // Generate auth token for api
+        $token = $user->createToken($data->device_name)->plainTextToken;
 
-        return response($return,200);
-        
+        // Generate output
+        $return = $user->toArray();
+        $return['token'] = $token;
+
+        // Return response
+        return response($return, 200);
     }
 
 
@@ -157,42 +155,18 @@ class AuthenticationController extends Controller
      *          response=200,
      *          description="Group response",
      *          @OA\JsonContent(
-     *              @OA\Property(
-     *                property="id",
-     *                type="integer",
-     *                format="int64",
-     *                example=1
-     *              ),
-     *              @OA\Property(
-     *                property="name",
-     *                type="string",
-     *                example="John Doe",
-     *              ),
-     *              @OA\Property(
-     *                property="email",
-     *                type="string",
-     *                example="john.doe@example.com",
-     *              ),
-     *              @OA\Property(
-     *                property="email_verified_at",
-     *                type="string",
-     *                format="date-time"
-     *              ),
-     *              @OA\Property(
-     *                property="created_at",
-     *                type="string",
-     *                format="date-time"
-     *              ),
-     *              @OA\Property(
-     *                property="updated_at",
-     *                type="string",
-     *                format="date-time"
-     *              ),
-     *              @OA\Property(
-     *                property="token",
-     *                type="string",
-     *                example="1|eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."
-     *              ),
+     *              allOf={
+     *                  @OA\Schema(
+     *                    ref="#/components/schemas/User"
+     *                  ),
+     *                  @OA\Schema(
+     *                    @OA\Property(
+     *                      property="token",
+     *                      type="string",
+     *                      example="1|eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."
+     *                    )
+     *                  )
+     *              }
      *          )
      *      ),
      *      @OA\Response(
@@ -209,8 +183,9 @@ class AuthenticationController extends Controller
      *      ),
      * )
      */
-    public function login(Request $request) {
-        
+    public function login(Request $request)
+    {
+
         $credentials = [
             "email" => $request->email,
             "password" => $request->password
@@ -224,7 +199,7 @@ class AuthenticationController extends Controller
         $return = $user->toArray();
         $return['token'] = $user->createToken($request->device_name)->plainTextToken;
 
-        return response($return,200);
+        return response($return, 200);
     }
 
 }

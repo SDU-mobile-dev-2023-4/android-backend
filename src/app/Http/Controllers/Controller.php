@@ -13,27 +13,6 @@ use Illuminate\Routing\Controller as BaseController;
  * )
  * @OA\PathItem(path="/api")
  * 
- * @OA\Server(
- *      url="https://uomi.ringhus.dk",
- *      description="UOMI API Server",
- *      @OA\ServerVariable(
- *        serverVariable="schema",
- *        enum={"http", "https"},
- *        default="https"
- *      ),
- *      @OA\ServerVariable(
- *        serverVariable="host",
- *        default="uomi.ringhus.dk"
- *      ),
- *      @OA\ServerVariable(
- *        serverVariable="port",
- *        default="443"
- *      ),
- *      @OA\ServerVariable(
- *        serverVariable="basePath",
- *        default="/api"
- *      ) 
- * )
  * 
  * @OA\SecurityScheme(
  *      securityScheme="bearerAuth",
@@ -60,12 +39,26 @@ use Illuminate\Routing\Controller as BaseController;
  *  
  *  @OA\Schema(
  *      schema="BadRequestError",
- *      description="Bad Request - The request was invalid or cannot be served. The exact error should be explained in the error payload. E.g. „The JSON is not valid“",
+ *      description="Bad Request - The request was invalid or cannot be served. The exact error is sent in the message and further ellaborated for each section in the errors datapoint. E.g. „The JSON is not valid“",
  *      @OA\Property(
  *          property="message",
  *          type="string",
- *          example="Bad Request"
+ *          example="The given data was invalid."
  *      ),
+ *      @OA\Property(
+ *        property="errors",
+ *        type="object",
+ *        description="The errors returned when the request is invalid, formatted as an object with the key being the field name and the value being an array of errors.",
+ *        example={
+ *          "field1": {
+ *              "The field1 is required.",
+ *              "The field1 must be at least 10 characters."
+ *          },
+ *          "field2": {
+ *              "The field2 field is required.",
+ *          },
+ *        }
+ *      )
  *  ),
  *  @OA\Schema(
  *      schema="UnauthorizedError",
