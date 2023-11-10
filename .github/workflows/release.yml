@@ -20,8 +20,9 @@ jobs:
         uses: ramsey/composer-install@v2
         with:
           composer-options: --no-dev --no-interaction --no-progress --no-suggest --optimize-autoloader --classmap-authoritative
+          working-directory: ./src
       - name: Update API Documentation
-        run: php artisan l5-swagger:generate
+        run: cd src && php artisan l5-swagger:generate
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v4
@@ -44,10 +45,10 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v4
         with:
-          context: ./
+          context: ./src
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          file: ./Dockerfile
+          file: ../docker/Dockerfile
           cache-from: type=gha
           cache-to: type=gha,mode=max
