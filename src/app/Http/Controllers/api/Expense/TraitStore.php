@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\api\Expense;
 
-use App\Http\Requests\Expense\StoreRequest;
+use App\Helper\Sanitizer;
+use App\Http\Requests\api\Expense\StoreRequest;
 use App\Models\Expense;
 use App\Models\User;
-use Illuminate\Http\Request;
 
 trait TraitStore {
     /**
@@ -77,21 +77,27 @@ trait TraitStore {
      */
     public function store(StoreRequest $request)
     {
-        $user = auth('sanctum')->user();
-        $group_id = $request->group_id;
-        $payee_id = $request->payee_id;
-        $name = $request->name;
-        $price = $request->price;
+        // Validated data
+        $data = $request->validated();
 
-        $payeeUser = User::find($payee_id);
+        // Get User
+        $user = User::find(auth('sanctum')->user()->id);
+
+        // Sanitize data
+        $group_id = Sanitizer::sanitize($data['group_id']);
+        $payee_id = Sanitizer::sanitize($data['payee_id']);
+        $name = Sanitizer::sanitize($data['name']);
+        $price = Sanitizer::sanitize($data['price']);
+
 
         // Check if user is in the group
+        
         if (!$user->groups()->where('group_id', $group_id)->exists()) {
             return response()->json(['message' => 'You are not in this group'], 403);
         }
 
         // Check if payee is in the group
-        // IKKE DONE ENDNU
+        $payeeUser = User::find($payee_id);
         if (!$payeeUser->groups()->where('group_id', $group_id)->exists()) {
             return response()->json(['message' => 'Payee is not in this group'], 400);
         }
