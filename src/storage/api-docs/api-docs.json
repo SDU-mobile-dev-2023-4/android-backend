@@ -387,7 +387,7 @@
                 ],
                 "summary": "Get all groups",
                 "description": "Get all groups",
-                "operationId": "index",
+                "operationId": "groupIndex",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -397,13 +397,26 @@
                                     "allOf": [
                                         {
                                             "properties": {
-                                                "": {
-                                                    "$ref": "#/components/schemas/Group"
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/Group"
+                                                    }
                                                 }
                                             },
                                             "type": "object"
                                         }
                                     ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UnauthorizedError"
                                 }
                             }
                         }
@@ -729,7 +742,7 @@
                 "properties": {
                     "message": {
                         "type": "string",
-                        "example": "Unauthorized"
+                        "example": "Unauthorized - Access token is missing or invalid"
                     }
                 },
                 "type": "object"
@@ -802,6 +815,18 @@
                         "description": "Group name",
                         "type": "string",
                         "example": "Group 1"
+                    },
+                    "created_at": {
+                        "description": "Date and time of creation",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2020-01-01 00:00:00"
+                    },
+                    "updated_at": {
+                        "description": "Date and time of last update",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2020-01-01 00:00:00"
                     }
                 },
                 "type": "object"

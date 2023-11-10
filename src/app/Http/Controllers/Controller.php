@@ -66,7 +66,7 @@ use Illuminate\Routing\Controller as BaseController;
  *      @OA\Property(
  *          property="message",
  *          type="string",
- *          example="Unauthorized"
+ *          example="Unauthorized - Access token is missing or invalid"
  *      )
  *  )
  * 

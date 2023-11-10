@@ -110,7 +110,7 @@ class AuthenticationController extends Controller
         $user->save();
 
         // Generate auth token for api
-        $token = $user->createToken($data->device_name)->plainTextToken;
+        $token = $user->createToken($data['device_name'])->plainTextToken;
 
         // Generate output
         $return = $user->toArray();
@@ -211,8 +211,8 @@ class AuthenticationController extends Controller
 
         // Generate credentials array
         $credentials = [
-            "email" => Sanitizer::sanitize($data->email),
-            "password" => Sanitizer::sanitize($data->password)
+            "email" => Sanitizer::sanitize($data['email']),
+            "password" => Sanitizer::sanitize($data['password'])
         ];
 
         // Check credentials
@@ -223,10 +223,10 @@ class AuthenticationController extends Controller
         }
 
         // Get user
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('email', $data['email'])->first();
 
         // Generate auth token for api
-        $token = $user->createToken($data->device_name)->plainTextToken;
+        $token = $user->createToken($data['device_name'])->plainTextToken;
 
         // Generate output
         $return = $user->toArray();

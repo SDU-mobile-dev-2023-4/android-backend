@@ -23,15 +23,15 @@ use Laravel\Sanctum\HasApiTokens;
  *      description="Group name",
  *      example="Group 1"
  *  ),
- *  @OA\Schema(
- *      schema="created_at",
+ *  @OA\Property(
+ *      property="created_at",
  *      type="string",
  *      format="date-time",
  *      description="Date and time of creation",
  *      example="2020-01-01 00:00:00"
  *  ),
- *  @OA\Schema(
- *      schema="updated_at",
+ *  @OA\Property(
+ *      property="updated_at",
  *      type="string",
  *      format="date-time",
  *      description="Date and time of last update",
@@ -52,7 +52,7 @@ class Group extends Model
         'pivot',
     ];
 
-    public function users() : BelongsToMany
+    public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class);
     }
