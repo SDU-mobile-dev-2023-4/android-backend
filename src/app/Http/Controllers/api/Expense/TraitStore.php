@@ -57,11 +57,7 @@ trait TraitStore {
      *     @OA\Response(
      *         response=200,
      *         description="Expense created successfully",
-     *         @OA\JsonContent(
-     *             allOf={
-     *                 @OA\Schema(ref="#/components/schemas/Expense")
-     *             }
-     *         ),
+     *         @OA\JsonContent(ref="#/components/schemas/Expense")
      *     ),
      *     @OA\Response(
      *         response=400,

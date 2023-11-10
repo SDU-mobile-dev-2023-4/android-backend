@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\api\Group;
 
+use App\Helper\Sanitizer;
+use App\Http\Requests\api\Group\AddUserToGroupRequest;
 use App\Models\Group;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -56,29 +58,26 @@ trait TraitAddUserToGroup {
      *         description="Forbidden",
      *         @OA\JsonContent(ref="#/components/schemas/ForbiddenError")
      *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Unprocessable Content",
+     *         @OA\JsonContent(ref="#/components/schemas/UnprocessableContent")
+     *     )
      * )
      */
-    public function addUserToGroup(Request $request, Group $group)
+    public function addUserToGroup(AddUserToGroupRequest $request, Group $group)
     {
+        $data = $request->validated();
+
         $user = auth('sanctum')->user();
-        $emailToAdd = $request->input('email'); // Get the email from the request
+        
+        // Get the email from the request
+        $emailToAdd = Sanitizer::sanitize($data['email']); 
 
         // Check if user whos logged in is member of the group.
         if (!$group->users()->where('user_id', $user->id)->exists()) {
             return response()->json(['message' => 'You are not authorized to add users to this group'], 403);
         }
-
-        // Check if the email is valid
-        if (!filter_var($emailToAdd, FILTER_VALIDATE_EMAIL)) {
-            return response()->json(['message' => 'The email is not valid'], 400);
-        }
-
-
-        // Check if there is a user with the specified email
-        if (!User::where('email', $emailToAdd)->exists()) {
-            return response()->json(['message' => 'User with the specified email does not exist'], 400);
-        }
-
 
         // Check if the new user is already member of the group
         if ($group->users()->where('email', $emailToAdd)->exists()) {
