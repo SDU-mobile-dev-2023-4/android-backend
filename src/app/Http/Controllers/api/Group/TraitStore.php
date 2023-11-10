@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\api\Group;
 
-use Illuminate\Http\Request;
+use App\Helper\Sanitizer;
+use App\Http\Requests\api\Group\GroupStoreRequest;
 use App\Models\Group;
 
-trait TraitStore {
+trait TraitStore
+{
     /**
      * Store a newly created resource in storage.
      * 
@@ -14,61 +16,55 @@ trait TraitStore {
      *      tags={"Groups"},
      *      summary="Create a new group",
      *      description="This endpoint is used to create a new group.",
-     *      operationId="store",
+     *      operationId="grouStore",
      *      security={{"bearerAuth":{}}},
+     *      
      *      @OA\Parameter(
      *          name="name",
      *          in="query",
      *          required=true,
      *          description="The name of the group",
+     *          example="Europe trip",
      *          @OA\Schema(
-     *              type="string"
+     *            type="string",
+     *            minLength=1,
+     *            maxLength=255,
+     *            example="Europe trip",
+     *            nullable=false
      *          ),
      *      ),
      *      @OA\Response(
      *          response=200,
      *          description="Group created successfully",
-     *          @OA\JsonContent(
-     *              @OA\Property(
-     *                  property="name",
-     *                  type="string",
-     *                  example="Group 1"
-     *              ),
-     *              @OA\Property(
-     *                  property="updated_at",
-     *                  type="string",
-     *                  format="date-time",
-     *              ),
-     *              @OA\Property(
-     *                  property="created_at",
-     *                  type="string",
-     *                  format="date-time",
-     *              ),
-     *              @OA\Property(
-     *                  property="id",
-     *                  type="integer",
-     *                  example="1"
-     *              ),
-     *          ),
+     *          @OA\JsonContent(ref="#/components/schemas/GroupWithUsersAndExpenses")
      *      ),
      *      @OA\Response(
      *          response=401,
-     *          description="You are not authenticated",
+     *          description="Unauthorized",
      *          @OA\JsonContent(ref="#/components/schemas/UnauthorizedError")
-     *      ),
-     *                  
+     *      ) 
      * )
      */
-    public function store(Request $request)
+    public function store(GroupStoreRequest $request)
     {
+        // Get input data
+        $data = $request->validated();
+
+        // Get user
         $user = auth('sanctum')->user();
 
+        // Create group
         $group = new Group();
-        $group->name = $request->name;
+        $group->name = Sanitizer::sanitize($data['name']);
         $group->save();
 
+        // Attach default user
         $group->users()->attach($user->id);
 
-        return response($group,200);
+        // Prepare response
+        $group->load('users', 'expenses');
+
+        // Return response
+        return response($group, 200);
     }
 }

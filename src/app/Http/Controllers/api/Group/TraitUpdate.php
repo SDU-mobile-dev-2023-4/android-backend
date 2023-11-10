@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\api\Group;
 
+use App\Helper\Sanitizer;
+use App\Http\Requests\api\Group\GroupStoreRequest;
 use App\Models\Group;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-trait TraitUpdate {
+trait TraitUpdate
+{
     /**
      * Update the specified resource in storage.
      * 
@@ -15,63 +16,79 @@ trait TraitUpdate {
      *      tags={"Groups"},
      *      summary="Update a group",
      *      description="This endpoint is used to update a group.",
-     *      operationId="update",
+     *      operationId="groupUpdate",
      *      security={{"bearerAuth":{}}},
+     *      
      *      @OA\Parameter(
      *          name="id",
-     *          in="path",
+     *          description="Group id",
      *          required=true,
-     *          description="The id of the group",
+     *          in="path",
      *          @OA\Schema(
-     *              type="integer"
-     *          ),
+     *              type="integer",
+     *              format="int64",
+     *              example="1",
+     *              nullable=false,
+     *          )
      *      ),
      *      @OA\Parameter(
      *          name="name",
      *          in="query",
      *          required=true,
      *          description="The name of the group",
+     *          example="Europe trip",
      *          @OA\Schema(
-     *              type="string"
+     *            type="string",
+     *            minLength=1,
+     *            maxLength=255,
+     *            example="Europe trip",
+     *            nullable=false
      *          ),
      *      ),
      *      @OA\Response(
      *          response=200,
      *          description="Group updated successfully",
-     *          @OA\JsonContent(
-     *              @OA\Property(
-     *                  property="message",
-     *                  type="string",
-     *                  example="Group updated successfully"
-     *              ),
-     *          ),
+     *          @OA\JsonContent(ref="#/components/schemas/GroupWithUsersAndExpenses")
      *      ),
      *      @OA\Response(
-     *        response=401,
-     *        description="Unauthorized",
-     *        @OA\JsonContent(ref="#/components/schemas/UnauthorizedError")
+     *          response=401,
+     *          description="Unauthorized",
+     *          @OA\JsonContent(ref="#/components/schemas/UnauthorizedError")
      *      ),
      *      @OA\Response(
      *          response=403,
-     *          description="Forbidden",
+     *          description="You are not authorized to edit this group",
      *          @OA\JsonContent(ref="#/components/schemas/ForbiddenError")
      *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Group not found",
+     *          @OA\JsonContent(ref="#/components/schemas/NotFoundError")
+     *      )
      *  )
      *              
      */
-    public function update(Request $request, Group $group)
+    public function update(Group $group, GroupStoreRequest $request)
     {
+        // Get input data
+        $data = $request->validated();
+
+        // Get user
         $user = auth('sanctum')->user();
 
-        if (!$group->users()->where('user_id', $user->id)->exists()) {
-            return response()->json(['message' => 'You are not authorized to update this group'], 403);
+        // Check if user is authorized to view this group
+        if (!$group->user($user->id)->exists()) {
+            return response()->json(['message' => 'You are not authorized to view this group'], 403);
         }
 
-        $group->name = $request->name;
-
+        // Update group
+        $group->name = Sanitizer::sanitize($data['name']);
         $group->save();
 
-        return response()->json(['message' => 'Group updated successfully'], 200);
+        // Prepare response
+        $group->load('users', 'expenses');
 
+        // Return response
+        return response($group, 200);
     }
 }

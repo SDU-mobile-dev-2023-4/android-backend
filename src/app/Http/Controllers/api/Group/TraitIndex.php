@@ -13,44 +13,23 @@ trait TraitIndex
      *     path="/api/groups",
      *     tags={"Groups"},
      *     summary="Get all groups",
-     *     description="Get all groups",
+     *     description="Get all groups visible to the authenticated user",
      *     operationId="groupIndex",
      *     security={{"bearerAuth":{}}},
      *     
      *     @OA\Response(
-     *         response=200,
-     *         description="OK",
-     *         @OA\JsonContent(
-     *             allOf={
-     *                 @OA\Schema(
-     *                     @OA\Property(
-     *                       property="data",
-     *                       type="array",
-     *                       @OA\Items(
-     *                          allOf={
-     *                              @OA\Schema(
-     *                                  ref="#/components/schemas/Group"
-     *                              ),
-     *                              @OA\Schema(
-     *                                  @OA\Property(
-     *                                      property="users",
-     *                                      type="array",
-     *                                      @OA\Items(
-     *                                          ref="#/components/schemas/User"
-     *                                      )
-     *                                  ),
-     *                                  @OA\Property(
-     *                                      property="expenses",
-     *                                      type="array",
-     *                                      @OA\Items(
-     *                                          ref="#/components/schemas/Expense"
-     *                                      )
-     *                                  )
-     *                              )
-     *                          }
-     *                       )
-     *                     )
-     *                 )
+     *          response=200,
+     *          description="OK",
+     *          @OA\JsonContent(
+     *              allOf={
+     *                  @OA\Schema(
+     *                      @OA\Property(
+     *                          property="data",
+     *                          type="array",
+     *                          minItems=0,
+     *                          @OA\Items(ref="#/components/schemas/GroupWithUsersAndExpenses")
+     *                      )
+     *                  )
      *             }
      *         )
      *     ),

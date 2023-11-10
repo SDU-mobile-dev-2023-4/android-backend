@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\api\Group;
 
 use App\Models\Group;
-use Illuminate\Support\Facades\Auth;
 
-trait TraitDestroy {
+trait TraitDestroy
+{
     /**
      * Remove the specified resource from storage.
      * 
@@ -16,13 +16,17 @@ trait TraitDestroy {
      *      description="This endpoint is used to delete a group.",
      *      operationId="destroy",
      *      security={{"bearerAuth":{}}},
+     *      
      *      @OA\Parameter(
      *          name="id",
      *          in="path",
      *          required=true,
      *          description="The id of the group",
      *          @OA\Schema(
-     *              type="integer"
+     *              type="integer",
+     *              format="int64",
+     *              example="1",
+     *              nullable=false,
      *          ),
      *      ),
      *      @OA\Response(
@@ -55,14 +59,18 @@ trait TraitDestroy {
      */
     public function destroy(Group $group)
     {
+        // Get user
         $user = auth('sanctum')->user();
 
-        if (!$group->users()->where('user_id', $user->id)->exists()) {
+        // Check if user is authorized to delete this group
+        if (!$group->user($user->id)->exists()) {
             return response()->json(['message' => 'You are not authorized to update this group'], 403);
         }
 
+        // Delete group
         $group->delete();
 
+        // Return response
         return response()->json(['message' => 'Group deleted successfully'], 200);
     }
 }

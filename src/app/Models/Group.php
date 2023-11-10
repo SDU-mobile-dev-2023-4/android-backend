@@ -37,7 +37,35 @@ use Laravel\Sanctum\HasApiTokens;
  *      description="Date and time of last update",
  *      example="2020-01-01 00:00:00"
  *  )
- * )    
+ * )
+ * 
+ * @OA\Schema(
+ *   schema="GroupWithUsersAndExpenses",
+ *   title="Group with users and expenses schema",
+ *   allOf={
+ *      @OA\Schema(
+ *          ref="#/components/schemas/Group"
+ *      ),
+ *      @OA\Schema(
+ *          @OA\Property(
+ *              property="users",
+ *              type="array",
+ *              minItems=0,
+ *              @OA\Items(
+ *                  ref="#/components/schemas/User"
+ *              )
+ *          ),
+ *          @OA\Property(
+ *              property="expenses",
+ *              type="array",
+ *              minItems=0,
+ *              @OA\Items(
+ *                  ref="#/components/schemas/Expense"
+ *              )
+ *          )
+ *      )
+ *  }
+ * )
  */
 class Group extends Model
 {
@@ -64,6 +92,8 @@ class Group extends Model
 
     public function scopeUser($query, $user_id)
     {
-        return $query->where('user_id', $user_id);
+        return $query->whereHas('users', function ($query) use ($user_id) {
+            $query->where('user_id', $user_id);
+        });
     }
 }

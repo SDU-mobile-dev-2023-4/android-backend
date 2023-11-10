@@ -184,7 +184,7 @@
                 "operationId": "groupShow",
                 "parameters": [
                     {
-                        "name": "group",
+                        "name": "id",
                         "in": "path",
                         "description": "Group id",
                         "required": true,
@@ -198,11 +198,11 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Group response",
+                        "description": "Group data",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Group"
+                                    "$ref": "#/components/schemas/GroupWithUsersAndExpenses"
                                 }
                             }
                         }
@@ -250,15 +250,18 @@
                 ],
                 "summary": "Update a group",
                 "description": "This endpoint is used to update a group.",
-                "operationId": "update",
+                "operationId": "groupUpdate",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "The id of the group",
+                        "description": "Group id",
                         "required": true,
                         "schema": {
-                            "type": "integer"
+                            "type": "integer",
+                            "format": "int64",
+                            "example": "1",
+                            "nullable": false
                         }
                     },
                     {
@@ -267,8 +270,13 @@
                         "description": "The name of the group",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
+                            "type": "string",
+                            "maxLength": 255,
+                            "minLength": 1,
+                            "example": "Europe trip",
+                            "nullable": false
+                        },
+                        "example": "Europe trip"
                     }
                 ],
                 "responses": {
@@ -277,13 +285,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Group updated successfully"
-                                        }
-                                    },
-                                    "type": "object"
+                                    "$ref": "#/components/schemas/GroupWithUsersAndExpenses"
                                 }
                             }
                         }
@@ -299,11 +301,21 @@
                         }
                     },
                     "403": {
-                        "description": "Forbidden",
+                        "description": "You are not authorized to edit this group",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/ForbiddenError"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Group not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NotFoundError"
                                 }
                             }
                         }
@@ -329,7 +341,10 @@
                         "description": "The id of the group",
                         "required": true,
                         "schema": {
-                            "type": "integer"
+                            "type": "integer",
+                            "format": "int64",
+                            "example": "1",
+                            "nullable": false
                         }
                     }
                 ],
@@ -394,7 +409,7 @@
                     "Groups"
                 ],
                 "summary": "Get all groups",
-                "description": "Get all groups",
+                "description": "Get all groups visible to the authenticated user",
                 "operationId": "groupIndex",
                 "responses": {
                     "200": {
@@ -408,29 +423,9 @@
                                                 "data": {
                                                     "type": "array",
                                                     "items": {
-                                                        "allOf": [
-                                                            {
-                                                                "$ref": "#/components/schemas/Group"
-                                                            },
-                                                            {
-                                                                "properties": {
-                                                                    "users": {
-                                                                        "type": "array",
-                                                                        "items": {
-                                                                            "$ref": "#/components/schemas/User"
-                                                                        }
-                                                                    },
-                                                                    "expenses": {
-                                                                        "type": "array",
-                                                                        "items": {
-                                                                            "$ref": "#/components/schemas/Expense"
-                                                                        }
-                                                                    }
-                                                                },
-                                                                "type": "object"
-                                                            }
-                                                        ]
-                                                    }
+                                                        "$ref": "#/components/schemas/GroupWithUsersAndExpenses"
+                                                    },
+                                                    "minItems": 0
                                                 }
                                             },
                                             "type": "object"
@@ -463,7 +458,7 @@
                 ],
                 "summary": "Create a new group",
                 "description": "This endpoint is used to create a new group.",
-                "operationId": "store",
+                "operationId": "grouStore",
                 "parameters": [
                     {
                         "name": "name",
@@ -471,8 +466,13 @@
                         "description": "The name of the group",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
+                            "type": "string",
+                            "maxLength": 255,
+                            "minLength": 1,
+                            "example": "Europe trip",
+                            "nullable": false
+                        },
+                        "example": "Europe trip"
                     }
                 ],
                 "responses": {
@@ -481,31 +481,13 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "name": {
-                                            "type": "string",
-                                            "example": "Group 1"
-                                        },
-                                        "updated_at": {
-                                            "type": "string",
-                                            "format": "date-time"
-                                        },
-                                        "created_at": {
-                                            "type": "string",
-                                            "format": "date-time"
-                                        },
-                                        "id": {
-                                            "type": "integer",
-                                            "example": "1"
-                                        }
-                                    },
-                                    "type": "object"
+                                    "$ref": "#/components/schemas/GroupWithUsersAndExpenses"
                                 }
                             }
                         }
                     },
                     "401": {
-                        "description": "You are not authenticated",
+                        "description": "Unauthorized",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -881,6 +863,33 @@
                     }
                 },
                 "type": "object"
+            },
+            "GroupWithUsersAndExpenses": {
+                "title": "Group with users and expenses schema",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/Group"
+                    },
+                    {
+                        "properties": {
+                            "users": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/User"
+                                },
+                                "minItems": 0
+                            },
+                            "expenses": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/Expense"
+                                },
+                                "minItems": 0
+                            }
+                        },
+                        "type": "object"
+                    }
+                ]
             },
             "User": {
                 "title": "User schema",

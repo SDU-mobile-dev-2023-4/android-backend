@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\api\Group;
 
 use App\Models\Group;
-use Illuminate\Support\Facades\Auth;
 
 trait TraitShow
 {
@@ -19,7 +18,7 @@ trait TraitShow
      *      security={{"bearerAuth":{}}},
      *      
      *      @OA\Parameter(
-     *          name="group",
+     *          name="id",
      *          description="Group id",
      *          required=true,
      *          in="path",
@@ -32,8 +31,8 @@ trait TraitShow
      *      ),
      *      @OA\Response(
      *          response=200,
-     *          description="Group response",
-     *          @OA\JsonContent(ref="#/components/schemas/Group")
+     *          description="Group data",
+     *          @OA\JsonContent(ref="#/components/schemas/GroupWithUsersAndExpenses")
      *      ),
      *      @OA\Response(
      *          response=401,
@@ -58,7 +57,7 @@ trait TraitShow
         $user = auth('sanctum')->user();
 
         // Check if user is authorized to view this group
-        if (!$group->users()->user($user->id)->exists()) {
+        if (!$group->user($user->id)->exists()) {
             return response()->json(['message' => 'You are not authorized to view this group'], 403);
         }
 
