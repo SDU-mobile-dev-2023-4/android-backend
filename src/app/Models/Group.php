@@ -49,7 +49,7 @@ class Group extends Model
     ];
 
     protected $hidden = [
-        
+        'pivot',
     ];
 
     public function users() : BelongsToMany
