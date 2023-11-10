@@ -59,9 +59,7 @@ trait TraitStore {
      *         description="Expense created successfully",
      *         @OA\JsonContent(
      *             allOf={
-     *                 @OA\Schema(
-     *                     @OA\Property(ref="#/components/schemas/Expense")
-     *                 )
+     *                 @OA\Schema(ref="#/components/schemas/Expense")
      *             }
      *         ),
      *     ),
