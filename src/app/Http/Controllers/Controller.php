@@ -40,7 +40,16 @@ use Illuminate\Routing\Controller as BaseController;
  *     )
  *    )
  *  )
- * 
+ *  
+ *  @OA\Schema(
+ *      schema="BadRequestError",
+ *      description="Bad Request - The request was invalid or cannot be served. The exact error should be explained in the error payload. E.g. „The JSON is not valid“",
+ *      @OA\Property(
+ *          property="message",
+ *          type="string",
+ *          example="Bad Request"
+ *      ),
+ *  ),
  *  @OA\Schema(
  *      schema="UnauthorizedError",
  *      description="Unauthorized - Access token is missing or invalid",
