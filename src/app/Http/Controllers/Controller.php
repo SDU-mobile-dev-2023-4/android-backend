@@ -6,22 +6,39 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 
- /**
+/**
  * @OA\Info(
  *     version="1.0",
- *     title="WeShare API",
+ *     title="UOMI API",
  * )
  * @OA\PathItem(path="/api")
  * 
  * @OA\Server(
- *      url="http://localhost:8000/api",
- *      description="WeShare API Server"
+ *      url="https://uomi.ringhus.dk",
+ *      description="UOMI API Server",
+ *      @OA\ServerVariable(
+ *        serverVariable="schema",
+ *        enum={"http", "https"},
+ *        default="https"
+ *      ),
+ *      @OA\ServerVariable(
+ *        serverVariable="host",
+ *        default="uomi.ringhus.dk"
+ *      ),
+ *      @OA\ServerVariable(
+ *        serverVariable="port",
+ *        default="443"
+ *      ),
+ *      @OA\ServerVariable(
+ *        serverVariable="basePath",
+ *        default="/api"
+ *      ) 
  * )
  * 
  * @OA\SecurityScheme(
  *      securityScheme="bearerAuth",
  *      type="http",
- *      scheme="bearer",
+ *      scheme="bearer"
  * )
  * 
  * 
