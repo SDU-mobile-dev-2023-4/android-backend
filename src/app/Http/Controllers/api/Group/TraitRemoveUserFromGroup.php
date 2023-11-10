@@ -10,12 +10,12 @@ use App\Models\User;
 trait TraitRemoveUserFromGroup
 {
     /**
-     * Add a user with a specific email to the group.
+     * Remove a user with a specific email from the group.
      *
      * @OA\Delete(
      *     path="/api/groups/{id}/users",
      *     tags={"Groups"},
-     *     summary="Add a user to a group",
+     *     summary="Remoev a user from a group",
      *     description="This endpoint is used to remove a user from a group.",
      *     operationId="RemoveUserFromGroup",
      *     security={{"bearerAuth":{}}},
