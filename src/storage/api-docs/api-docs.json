@@ -58,11 +58,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "allOf": [
-                                        {
-                                            "$ref": "#/components/schemas/Expense"
-                                        }
-                                    ]
+                                    "$ref": "#/components/schemas/Expense"
                                 }
                             }
                         }
@@ -156,6 +152,16 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/ForbiddenError"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Content",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UnprocessableContent"
                                 }
                             }
                         }
@@ -763,6 +769,16 @@
                     "message": {
                         "type": "string",
                         "example": "Not Found"
+                    }
+                },
+                "type": "object"
+            },
+            "UnprocessableContent": {
+                "description": "The request was well-formed but was unable to be followed due to semantic errors.",
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "example": "Unprocessable Content"
                     }
                 },
                 "type": "object"

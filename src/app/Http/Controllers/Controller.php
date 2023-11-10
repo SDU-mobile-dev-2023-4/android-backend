@@ -79,6 +79,7 @@ use Illuminate\Routing\Controller as BaseController;
  *          example="Forbidden"
  *      )
  *  )
+ *  
  *  @OA\Schema(
  *      schema="NotFoundError",
  *      description="Not Found - The resource you are looking for was not found",
@@ -88,8 +89,9 @@ use Illuminate\Routing\Controller as BaseController;
  *          example="Not Found"
  *      )
  *  )
+ *  
  *  @OA\Schema(
- *      Schema="UnprocessableContent",
+ *      schema="UnprocessableContent",
  *      description="The request was well-formed but was unable to be followed due to semantic errors.",
  *      @OA\Property(
  *          property="message",
