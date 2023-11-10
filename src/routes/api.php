@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\Hash;
 Route::group(['namespace' => 'App\Http\Controllers\api', 'middleware' => [ 'check-auth']], function () {
     Route::apiResource('/groups',   'Group\GroupController');
     Route::apiResource('/users',    'user\UserController');
-    Route::apiResource('/expenses', 'expense\ExpenseController');
+    Route::apiResource('/expenses', 'Expense\ExpenseController');
 
     Route::post  ('/groups/{group}/add-user',    'Group\GroupController@addUserToGroup');
     Route::delete('/groups/{group}/remove-user', 'Group\GroupController@removeUserFromGroup');
