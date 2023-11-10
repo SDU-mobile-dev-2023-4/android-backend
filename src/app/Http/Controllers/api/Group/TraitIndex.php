@@ -27,7 +27,7 @@ trait TraitIndex
      *                          property="data",
      *                          type="array",
      *                          minItems=0,
-     *                          @OA\Items(ref="#/components/schemas/GroupWithUsersAndExpenses")
+     *                          @OA\Items(ref="#/components/schemas/Group")
      *                      )
      *                  )
      *             }
@@ -46,7 +46,7 @@ trait TraitIndex
         $user = auth('sanctum')->user();
 
         // Get groups
-        $groups = $user->groups()->with('users', 'expenses')->get();
+        $groups = $user->groups()->get();
 
         // Return the groups with users and expenses
         return $groups;

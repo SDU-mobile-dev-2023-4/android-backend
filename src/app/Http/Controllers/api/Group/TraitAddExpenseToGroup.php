@@ -1,38 +1,39 @@
 <?php
 
-namespace App\Http\Controllers\api\Expense;
+namespace App\Http\Controllers\api\Group;
 
 use App\Helper\Sanitizer;
-use App\Http\Requests\api\Expense\StoreRequest;
+use App\Http\Requests\api\Group\AddUserToGroupRequest;
 use App\Models\Expense;
+use App\Models\Group;
 use App\Models\User;
 
-trait TraitStore {
+trait TraitAddExpenseToGroup
+{
     /**
-     * Store a newly created resource in storage.
-     * 
+     * Add a user with a specific email to the group.
+     *
      * @OA\Post(
-     *     path="/api/expenses",
-     *     tags={"Expenses"},
-     *     summary="Create a new expense",
-     *     description="This endpoint is used to create a new expense.",
-     *     operationId="expenseStore",
+     *     path="/api/groups/{id}/expenses",
+     *     tags={"Groups"},
+     *     summary="Add a expense to a group",
+     *     description="This endpoint is used to add a expense to a group.",
+     *     operationId="addExpenseToGroup",
      *     security={{"bearerAuth":{}}},
      *     
      *     @OA\Parameter(
-     *         name="group_id",
-     *         in="query",
-     *         required=true,
-     *         description="The id of the group",
-     *         example="1",
-     *         @OA\Schema(
+     *          name="id",
+     *          in="path",
+     *          required=true,
+     *          description="The id of the group",
+     *          @OA\Schema(
      *              type="integer",
      *              format="int64",
      *              example="1",
      *              nullable=false,
-     *         ),
+     *          ),
      *     ),
-     *     @OA\Parameter(
+     *         @OA\Parameter(
      *         name="payee_id",
      *         in="query",
      *         required=true,
@@ -72,24 +73,39 @@ trait TraitStore {
      *              nullable=false,
      *         ),
      *     ),
-     *     @OA\Response(
+     *      @OA\Response(
      *         response=200,
-     *         description="Expense created successfully",
-     *         @OA\JsonContent(ref="#/components/schemas/Expense")
-     *     ),
-     *     @OA\Response(
+     *         description="Expense added to group successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/GroupWithUsersAndExpenses")
+     *      ),
+     *      @OA\Response(
      *         response=400,
-     *         description="Payee is not in this group",
+     *         description="Bad Request",
      *         @OA\JsonContent(ref="#/components/schemas/BadRequestError")
-     *     ),
-     *     @OA\Response(
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthorized",
+     *          @OA\JsonContent(ref="#/components/schemas/UnauthorizedError")
+     *      ),
+     *      @OA\Response(
      *         response=403,
-     *         description="You are not in this group",
+     *         description="Forbidden",
      *         @OA\JsonContent(ref="#/components/schemas/ForbiddenError")
-     *     )
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Not Found",
+     *          @OA\JsonContent(ref="#/components/schemas/NotFoundError")
+     *      ),
+     *      @OA\Response(
+     *        response=422,
+     *        description="Bad Request - One or more errors with the input data",
+     *        @OA\JsonContent(ref="#/components/schemas/BadRequestError")
+     *      ),
      * )
      */
-    public function store(StoreRequest $request)
+    public function addExpenseToGroup(AddUserToGroupRequest $request, Group $group)
     {
         // Validated data
         $data = $request->validated();
@@ -98,32 +114,34 @@ trait TraitStore {
         $user = User::find(auth('sanctum')->user()->id);
 
         // Sanitize data
-        $group_id = Sanitizer::sanitize($data['group_id']);
         $payee_id = Sanitizer::sanitize($data['payee_id']);
         $name = Sanitizer::sanitize($data['name']);
         $price = Sanitizer::sanitize($data['price']);
 
-        // Check if user is in the group
-        if (!$user->groups()->where('group_id', $group_id)->exists()) {
+        // Check if user is authorized to add expense to this group
+        if (!$group->user($user->id)->exists()) {
             return response()->json(['message' => 'You are not in this group'], 403);
         }
 
         // Check if payee is in the group
         $payeeUser = User::find($payee_id);
-        if (!$payeeUser->groups()->where('group_id', $group_id)->exists()) {
+        if (!$group->user($payeeUser->id)->exists()) {
             return response()->json(['message' => 'Payee is not in this group'], 400);
         }
 
         // Create expense
         $expense = new Expense();
-        $expense->group_id = $group_id;
+        $expense->group_id = $group->id;
         $expense->payee_id = $payee_id;
         $expense->created_by = $user->id;
         $expense->name = $name;
         $expense->price = $price;
         $expense->save();
 
-        // Return response
-        return response()->json($expense, 200);
+        // Load group data
+        $group->load('users', 'expenses');
+
+        // Return group
+        return $group;
     }
 }

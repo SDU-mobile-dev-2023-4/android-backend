@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 Route::group(['namespace' => 'App\Http\Controllers\api', 'middleware' => [ 'check-auth']], function () {
     Route::apiResource('/groups',   'Group\GroupController');
     Route::apiResource('/users',    'user\UserController');
-    Route::apiResource('/expenses', 'Expense\ExpenseController');
+    Route::apiResource('/expenses', 'Expense\ExpenseController', ['only' => ['store']]);
 
     Route::post  ('/groups/{group}/user',    'Group\GroupController@addUserToGroup');
     Route::delete('/groups/{group}/user',    'Group\GroupController@removeUserFromGroup');

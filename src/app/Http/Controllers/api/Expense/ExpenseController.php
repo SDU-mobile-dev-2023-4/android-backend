@@ -6,9 +6,9 @@ use App\Http\Controllers\Controller;
 
 class ExpenseController extends Controller
 {
-    use TraitDestroy;
-    use TraitIndex;
-    use TraitShow;
+    // use TraitDestroy;
+    // use TraitIndex;
+    // use TraitShow;
     use TraitStore;
-    use TraitUpdate;
+    // use TraitUpdate;
 }
