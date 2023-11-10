@@ -21,8 +21,12 @@
                         "description": "The id of the group",
                         "required": true,
                         "schema": {
-                            "type": "integer"
-                        }
+                            "type": "integer",
+                            "format": "int64",
+                            "example": "1",
+                            "nullable": false
+                        },
+                        "example": "1"
                     },
                     {
                         "name": "payee_id",
@@ -30,8 +34,12 @@
                         "description": "The id of the payee",
                         "required": true,
                         "schema": {
-                            "type": "integer"
-                        }
+                            "type": "integer",
+                            "format": "int64",
+                            "example": "1",
+                            "nullable": false
+                        },
+                        "example": "1"
                     },
                     {
                         "name": "name",
@@ -39,8 +47,13 @@
                         "description": "The name of the expense",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
+                            "type": "string",
+                            "maxLength": 255,
+                            "minLength": 1,
+                            "example": "Europe trip",
+                            "nullable": false
+                        },
+                        "example": "Train ticket"
                     },
                     {
                         "name": "price",
@@ -48,8 +61,12 @@
                         "description": "The price of the expense",
                         "required": true,
                         "schema": {
-                            "type": "integer"
-                        }
+                            "type": "integer",
+                            "format": "int64",
+                            "example": "1",
+                            "nullable": false
+                        },
+                        "example": "100"
                     }
                 ],
                 "responses": {
@@ -91,7 +108,7 @@
                 ]
             }
         },
-        "/api/groups/{id}/add-user": {
+        "/api/groups/{id}/users": {
             "post": {
                 "tags": [
                     "Groups"
@@ -755,19 +772,8 @@
     },
     "components": {
         "schemas": {
-            "ErrorResponse": {
-                "properties": {
-                    "message": {
-                        "type": "string",
-                        "example": "The given data was invalid."
-                    },
-                    "errors": {
-                        "type": "object"
-                    }
-                },
-                "type": "object"
-            },
             "BadRequestError": {
+                "title": "Bad Request",
                 "description": "Bad Request - The request was invalid or cannot be served. The exact error is sent in the message and further ellaborated for each section in the errors datapoint. E.g. „The JSON is not valid“",
                 "properties": {
                     "message": {
@@ -791,6 +797,7 @@
                 "type": "object"
             },
             "UnauthorizedError": {
+                "title": "Unauthorized",
                 "description": "Unauthorized - Access token is missing or invalid",
                 "properties": {
                     "message": {
@@ -801,6 +808,7 @@
                 "type": "object"
             },
             "ForbiddenError": {
+                "title": "Forbidden",
                 "description": "Forbidden - You don't have permission to access this resource",
                 "properties": {
                     "message": {
@@ -811,6 +819,7 @@
                 "type": "object"
             },
             "NotFoundError": {
+                "title": "Not Found",
                 "description": "Not Found - The resource you are looking for was not found",
                 "properties": {
                     "message": {
@@ -821,6 +830,7 @@
                 "type": "object"
             },
             "UnprocessableContent": {
+                "title": "Unprocessable Content",
                 "description": "The request was well-formed but was unable to be followed due to semantic errors.",
                 "properties": {
                     "message": {

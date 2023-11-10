@@ -6,7 +6,6 @@ use App\Helper\Sanitizer;
 use App\Http\Requests\api\Group\AddUserToGroupRequest;
 use App\Models\Group;
 use App\Models\User;
-use Illuminate\Http\Request;
 
 trait TraitAddUserToGroup
 {
@@ -14,7 +13,7 @@ trait TraitAddUserToGroup
      * Add a user with a specific email to the group.
      *
      * @OA\Post(
-     *     path="/api/groups/{id}/add-user",
+     *     path="/api/groups/{id}/users",
      *     tags={"Groups"},
      *     summary="Add a user to a group",
      *     description="This endpoint is used to add a user to a group.",

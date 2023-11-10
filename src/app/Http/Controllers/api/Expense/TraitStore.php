@@ -18,13 +18,18 @@ trait TraitStore {
      *     description="This endpoint is used to create a new expense.",
      *     operationId="expenseStore",
      *     security={{"bearerAuth":{}}},
+     *     
      *     @OA\Parameter(
      *         name="group_id",
      *         in="query",
      *         required=true,
      *         description="The id of the group",
+     *         example="1",
      *         @OA\Schema(
-     *             type="integer"
+     *              type="integer",
+     *              format="int64",
+     *              example="1",
+     *              nullable=false,
      *         ),
      *     ),
      *     @OA\Parameter(
@@ -32,8 +37,12 @@ trait TraitStore {
      *         in="query",
      *         required=true,
      *         description="The id of the payee",
+     *         example="1",
      *         @OA\Schema(
-     *             type="integer"
+     *              type="integer",
+     *              format="int64",
+     *              example="1",
+     *              nullable=false,
      *         ),
      *     ),
      *     @OA\Parameter(
@@ -41,8 +50,13 @@ trait TraitStore {
      *         in="query",
      *         required=true,
      *         description="The name of the expense",
+     *         example="Train ticket",
      *         @OA\Schema(
-     *             type="string"
+     *              type="string",
+     *              minLength=1,
+     *              maxLength=255,
+     *              example="Europe trip",
+     *              nullable=false
      *         ),
      *     ),
      *     @OA\Parameter(
@@ -50,8 +64,12 @@ trait TraitStore {
      *         in="query",
      *         required=true,
      *         description="The price of the expense",
+     *         example="100",
      *         @OA\Schema(
-     *             type="integer"
+     *              type="integer",
+     *              format="int64",
+     *              example="1",
+     *              nullable=false,
      *         ),
      *     ),
      *     @OA\Response(

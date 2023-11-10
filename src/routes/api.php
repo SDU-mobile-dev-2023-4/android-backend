@@ -1,10 +1,6 @@
 <?php
 
-use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Support\Facades\Hash;
 
 
 /*
@@ -27,9 +23,8 @@ Route::group(['namespace' => 'App\Http\Controllers\api', 'middleware' => [ 'chec
     Route::apiResource('/users',    'user\UserController');
     Route::apiResource('/expenses', 'Expense\ExpenseController');
 
-    Route::post  ('/groups/{group}/add-user',    'Group\GroupController@addUserToGroup');
-    Route::delete('/groups/{group}/remove-user', 'Group\GroupController@removeUserFromGroup');
-
+    Route::post  ('/groups/{group}/user',    'Group\GroupController@addUserToGroup');
+    Route::delete('/groups/{group}/user',    'Group\GroupController@removeUserFromGroup');
 });
 
 
@@ -39,37 +34,4 @@ Route::group(['namespace' => 'App\Http\Controllers\api', 'middleware' => [ 'chec
 Route::group(['namespace' => 'App\Http\Controllers\api'], function () {
     Route::post('/register', 'User\AuthenticationController@register');
     Route::post('/login',    'User\AuthenticationController@login');
-});
-
-
-/**
- * DENNE DEL SKAL FJERNES OVER I EN CONTROLLER FOR SIG SELV, NU LIGGER DEN HER TIL TEST :D
- * 
- * @OA\Get(
- *   tags={"Tag"},
- *   path="Path",
- *   summary="Summary",
- *   @OA\Parameter(ref="#/components/parameters/id"),
- *   @OA\Response(response=200, description="OK"),
- *   @OA\Response(response=401, description="Unauthorized"),
- *   @OA\Response(response=404, description="Not Found")
- * )
- */
-
-Route::post('/sanctum/token', function (Request $request) {
-    $request->validate([
-        'email' => 'required|email',
-        'password' => 'required',
-        'device_name' => 'required',
-    ]);
- 
-    $user = User::where('email', $request->email)->first();
- 
-    if (! $user || ! Hash::check($request->password, $user->password)) {
-        throw ValidationException::withMessages([
-            'email' => ['The provided credentials are incorrect.'],
-        ]);
-    }
- 
-    return $user->createToken($request->device_name)->plainTextToken;
 });
