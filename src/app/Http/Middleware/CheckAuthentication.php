@@ -19,6 +19,6 @@ class CheckAuthentication
             return $next($request);
         }
         
-        return response()->json(['message' => 'You\'re not logged in'], 401);
+        return response()->json(['message' => 'Unauthorized - Access token is missing or invalid'], 401);
     }
 }

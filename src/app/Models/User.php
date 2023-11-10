@@ -36,6 +36,14 @@ use Laravel\Sanctum\HasApiTokens;
  *      nullable=false
  *  ),
  *  @OA\Property(
+ *    property="email_verified_at",
+ *    type="string",
+ *    example="2021-01-01 00:00:00",
+ *    description="User email verified at",
+ *    default=null,
+ *    nullable=true
+ *  ),
+ *  @OA\Property(
  *      property="created_at",
  *      type="string",
  *      description="User created at",
@@ -90,7 +98,7 @@ class User extends Authenticatable
     /**
      * The groups that belong to the user.
      */
-    public function groups() : BelongsToMany
+    public function groups(): BelongsToMany
     {
         return $this->belongsToMany(Group::class);
     }
@@ -109,7 +117,8 @@ class User extends Authenticatable
      * @param $value
      * @return void
      */
-    public function setPasswordAttribute($value) {
+    public function setPasswordAttribute($value)
+    {
         $this->attributes['password'] = Hash::make($value);
     }
 }
