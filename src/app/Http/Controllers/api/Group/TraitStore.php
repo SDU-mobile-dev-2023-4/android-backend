@@ -1,10 +1,9 @@
 <?php
 
 namespace App\Http\Controllers\api\Group;
+
 use Illuminate\Http\Request;
 use App\Models\Group;
-
-use Illuminate\Support\Facades\Auth;
 
 trait TraitStore {
     /**
@@ -12,7 +11,7 @@ trait TraitStore {
      */
     public function store(Request $request)
     {
-        $user = Auth::user();
+        $user = auth('sanctum')->user();
 
         $group = new Group();
         $group->name = $request->name;
@@ -20,5 +19,6 @@ trait TraitStore {
 
         $group->users()->attach($user->id);
 
+        return response($group,200);
     }
 }
