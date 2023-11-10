@@ -1,13 +1,31 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "WeShare API",
+        "title": "UOMI API",
         "version": "1.0"
     },
     "servers": [
         {
-            "url": "http://localhost:8000/api",
-            "description": "WeShare API Server"
+            "url": "https://uomi.ringhus.dk",
+            "description": "UOMI API Server",
+            "variables": {
+                "schema": {
+                    "enum": [
+                        "http",
+                        "https"
+                    ],
+                    "default": "https"
+                },
+                "host": {
+                    "default": "uomi.ringhus.dk"
+                },
+                "port": {
+                    "default": "443"
+                },
+                "basePath": {
+                    "default": "/api"
+                }
+            }
         }
     ],
     "paths": {
