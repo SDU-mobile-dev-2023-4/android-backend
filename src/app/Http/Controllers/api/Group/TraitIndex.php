@@ -27,7 +27,27 @@ trait TraitIndex
      *                       property="data",
      *                       type="array",
      *                       @OA\Items(
-     *                          ref="#/components/schemas/Group"
+     *                          allOf={
+     *                              @OA\Schema(
+     *                                  ref="#/components/schemas/Group"
+     *                              ),
+     *                              @OA\Schema(
+     *                                  @OA\Property(
+     *                                      property="users",
+     *                                      type="array",
+     *                                      @OA\Items(
+     *                                          ref="#/components/schemas/User"
+     *                                      )
+     *                                  ),
+     *                                  @OA\Property(
+     *                                      property="expenses",
+     *                                      type="array",
+     *                                      @OA\Items(
+     *                                          ref="#/components/schemas/Expense"
+     *                                      )
+     *                                  )
+     *                              )
+     *                          }
      *                       )
      *                     )
      *                 )

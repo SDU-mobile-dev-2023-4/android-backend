@@ -46,17 +46,19 @@ use Laravel\Sanctum\HasApiTokens;
  *         description="Expense price",
  *         example="100",
  *     ),
- *     @OA\Schema(
- *         schema="updated_at",
+ *     @OA\Property(
+ *         property="updated_at",
  *         type="string",
  *         format="date-time",
  *         description="Date and time of last update",
+ *         example="2020-01-01 00:00:00"
  *     ),
- *     @OA\Schema(
- *         schema="created_at",
+ *     @OA\Property(
+ *         property="created_at",
  *         type="string",
  *         format="date-time",
  *         description="Date and time of creation",
+ *         example="2020-01-01 00:00:00"
  *     ),
  * )
  */
@@ -74,7 +76,7 @@ class Expense extends Model
     ];
 
     protected $hidden = [
-        
+
     ];
 
     public function group()

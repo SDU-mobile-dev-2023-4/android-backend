@@ -181,7 +181,7 @@
                 ],
                 "summary": "Get a group",
                 "description": "Returns a single group with all its information",
-                "operationId": "show",
+                "operationId": "groupShow",
                 "parameters": [
                     {
                         "name": "group",
@@ -190,7 +190,9 @@
                         "required": true,
                         "schema": {
                             "type": "integer",
-                            "format": "int64"
+                            "format": "int64",
+                            "example": "1",
+                            "nullable": false
                         }
                     }
                 ],
@@ -406,7 +408,28 @@
                                                 "data": {
                                                     "type": "array",
                                                     "items": {
-                                                        "$ref": "#/components/schemas/Group"
+                                                        "allOf": [
+                                                            {
+                                                                "$ref": "#/components/schemas/Group"
+                                                            },
+                                                            {
+                                                                "properties": {
+                                                                    "users": {
+                                                                        "type": "array",
+                                                                        "items": {
+                                                                            "$ref": "#/components/schemas/User"
+                                                                        }
+                                                                    },
+                                                                    "expenses": {
+                                                                        "type": "array",
+                                                                        "items": {
+                                                                            "$ref": "#/components/schemas/Expense"
+                                                                        }
+                                                                    }
+                                                                },
+                                                                "type": "object"
+                                                            }
+                                                        ]
                                                     }
                                                 }
                                             },
@@ -815,6 +838,18 @@
                         "description": "Expense price",
                         "type": "integer",
                         "example": "100"
+                    },
+                    "updated_at": {
+                        "description": "Date and time of last update",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2020-01-01 00:00:00"
+                    },
+                    "created_at": {
+                        "description": "Date and time of creation",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2020-01-01 00:00:00"
                     }
                 },
                 "type": "object"

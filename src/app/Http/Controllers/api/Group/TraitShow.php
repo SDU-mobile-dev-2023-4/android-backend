@@ -5,7 +5,8 @@ namespace App\Http\Controllers\api\Group;
 use App\Models\Group;
 use Illuminate\Support\Facades\Auth;
 
-trait TraitShow {
+trait TraitShow
+{
     /**
      * Display the specified resource.
      *
@@ -14,8 +15,9 @@ trait TraitShow {
      *      tags={"Groups"},
      *      summary="Get a group",
      *      description="Returns a single group with all its information",
-     *      operationId="show",
+     *      operationId="groupShow",
      *      security={{"bearerAuth":{}}},
+     *      
      *      @OA\Parameter(
      *          name="group",
      *          description="Group id",
@@ -23,7 +25,9 @@ trait TraitShow {
      *          in="path",
      *          @OA\Schema(
      *              type="integer",
-     *              format="int64"
+     *              format="int64",
+     *              example="1",
+     *              nullable=false,
      *          )
      *      ),
      *      @OA\Response(
@@ -50,12 +54,18 @@ trait TraitShow {
      */
     public function show(Group $group)
     {
+        // Get user
         $user = auth('sanctum')->user();
 
-        if (!$group->users()->where('user_id', $user->id)->exists()) {
+        // Check if user is authorized to view this group
+        if (!$group->users()->user($user->id)->exists()) {
             return response()->json(['message' => 'You are not authorized to view this group'], 403);
         }
 
+        // Load group data
+        $group->load('users', 'expenses');
+
+        // Return group
         return $group;
     }
 }
