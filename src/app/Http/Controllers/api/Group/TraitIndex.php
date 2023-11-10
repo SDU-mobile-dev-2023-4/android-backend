@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers\api\Group;
 
-use App\Models\Group;
-use Illuminate\Support\Facades\Auth;
-
 trait TraitIndex {
     /**
      * Display a listing of the resource.
@@ -37,12 +34,11 @@ trait TraitIndex {
      */
     public function index()
     {
-        $user = Auth::user();
+        $user = auth('sanctum')->user();
 
-        $groups = Group::where('user_id', $user->id)->get();
+        $groups = $user->groups()->with('users')->get();
 
         return $groups;
-
     }
 }
 
