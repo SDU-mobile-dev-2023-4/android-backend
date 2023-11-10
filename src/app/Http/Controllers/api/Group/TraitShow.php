@@ -50,7 +50,7 @@ trait TraitShow {
      */
     public function show(Group $group)
     {
-        $user = Auth::user();
+        $user = auth('sanctum')->user();
 
         if (!$group->users()->where('user_id', $user->id)->exists()) {
             return response()->json(['message' => 'You are not authorized to view this group'], 403);
