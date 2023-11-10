@@ -9,6 +9,55 @@ use Illuminate\Support\Facades\Auth;
 trait TraitUpdate {
     /**
      * Update the specified resource in storage.
+     * 
+     * @OA\Put(
+     *      path="/api/groups/{id}",
+     *      tags={"Groups"},
+     *      summary="Update a group",
+     *      description="This endpoint is used to update a group.",
+     *      operationId="update",
+     *      security={{"bearerAuth":{}}},
+     *      @OA\Parameter(
+     *          name="id",
+     *          in="path",
+     *          required=true,
+     *          description="The id of the group",
+     *          @OA\Schema(
+     *              type="integer"
+     *          ),
+     *      ),
+     *      @OA\Parameter(
+     *          name="name",
+     *          in="query",
+     *          required=true,
+     *          description="The name of the group",
+     *          @OA\Schema(
+     *              type="string"
+     *          ),
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Group updated successfully",
+     *          @OA\JsonContent(
+     *              @OA\Property(
+     *                  property="message",
+     *                  type="string",
+     *                  example="Group updated successfully"
+     *              ),
+     *          ),
+     *      ),
+     *      @OA\Response(
+     *        response=401,
+     *        description="Unauthorized",
+     *        @OA\JsonContent(ref="#/components/schemas/UnauthorizedError")
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden",
+     *          @OA\JsonContent(ref="#/components/schemas/ForbiddenError")
+     *      ),
+     *  )
+     *              
      */
     public function update(Request $request, Group $group)
     {
