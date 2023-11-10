@@ -64,6 +64,11 @@ trait TraitUpdate
      *          response=404,
      *          description="Group not found",
      *          @OA\JsonContent(ref="#/components/schemas/NotFoundError")
+     *      ),
+     *      @OA\Response(
+     *        response=422,
+     *        description="Bad Request - One or more errors with the input data",
+     *        @OA\JsonContent(ref="#/components/schemas/BadRequestError")
      *      )
      *  )
      *              

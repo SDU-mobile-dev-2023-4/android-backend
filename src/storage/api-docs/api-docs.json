@@ -106,16 +106,24 @@
                         "description": "The id of the group",
                         "required": true,
                         "schema": {
-                            "type": "integer"
+                            "type": "integer",
+                            "format": "int64",
+                            "example": "1",
+                            "nullable": false
                         }
                     },
                     {
                         "name": "email",
                         "in": "query",
-                        "description": "The email of the user to add to the group",
+                        "description": "The email of the user.",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "format": "email",
+                            "maxLength": 255,
+                            "minLength": 2,
+                            "example": "john.doe@example.com",
+                            "nullable": false
                         }
                     }
                 ],
@@ -125,13 +133,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "User added to group successfully"
-                                        }
-                                    },
-                                    "type": "object"
+                                    "$ref": "#/components/schemas/GroupWithUsersAndExpenses"
                                 }
                             }
                         }
@@ -146,6 +148,16 @@
                             }
                         }
                     },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UnauthorizedError"
+                                }
+                            }
+                        }
+                    },
                     "403": {
                         "description": "Forbidden",
                         "content": {
@@ -156,12 +168,22 @@
                             }
                         }
                     },
-                    "422": {
-                        "description": "Unprocessable Content",
+                    "404": {
+                        "description": "Not Found",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/UnprocessableContent"
+                                    "$ref": "#/components/schemas/NotFoundError"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Bad Request - One or more errors with the input data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BadRequestError"
                                 }
                             }
                         }
@@ -316,6 +338,16 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/NotFoundError"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Bad Request - One or more errors with the input data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BadRequestError"
                                 }
                             }
                         }
@@ -495,6 +527,16 @@
                                 }
                             }
                         }
+                    },
+                    "422": {
+                        "description": "Bad Request - One or more errors with the input data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BadRequestError"
+                                }
+                            }
+                        }
                     }
                 },
                 "security": [
@@ -618,7 +660,7 @@
                     {
                         "name": "email",
                         "in": "query",
-                        "description": "The email of the user. Must be unique.",
+                        "description": "The email of the user.",
                         "required": true,
                         "schema": {
                             "type": "string",

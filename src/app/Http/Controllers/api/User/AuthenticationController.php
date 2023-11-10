@@ -131,7 +131,7 @@ class AuthenticationController extends Controller
      *          name="email",
      *          in="query",
      *          required=true,
-     *          description="The email of the user. Must be unique.",
+     *          description="The email of the user.",
      *          @OA\Schema(
      *              type="string",
      *              format="email",

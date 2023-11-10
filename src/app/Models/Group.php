@@ -90,10 +90,23 @@ class Group extends Model
         return $this->hasMany(Expense::class);
     }
 
+    /**
+     * Scope a query to only include groups of a given user.
+     */
     public function scopeUser($query, $user_id)
     {
         return $query->whereHas('users', function ($query) use ($user_id) {
             $query->where('user_id', $user_id);
+        });
+    }
+
+    /**
+     * Scope a query to only include groups of a given email.
+     */
+    public function scopeEmail($query, $email)
+    {
+        return $query->whereHas('users', function ($query) use ($email) {
+            $query->where('email', $email);
         });
     }
 }

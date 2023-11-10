@@ -24,21 +24,8 @@ use Illuminate\Routing\Controller as BaseController;
  *  --- Errors
  * 
  *  @OA\Schema(
- *      schema="ErrorResponse",
- *      @OA\Property(
- *          property="message",
- *          type="string",
- *          example="The given data was invalid."
- *      ),
- *      @OA\Property(
- *          property="errors",
- *          type="object"
- *     )
- *    )
- *  )
- *  
- *  @OA\Schema(
  *      schema="BadRequestError",
+ *      title="Bad Request",
  *      description="Bad Request - The request was invalid or cannot be served. The exact error is sent in the message and further ellaborated for each section in the errors datapoint. E.g. „The JSON is not valid“",
  *      @OA\Property(
  *          property="message",
@@ -62,6 +49,7 @@ use Illuminate\Routing\Controller as BaseController;
  *  ),
  *  @OA\Schema(
  *      schema="UnauthorizedError",
+ *      title="Unauthorized",
  *      description="Unauthorized - Access token is missing or invalid",
  *      @OA\Property(
  *          property="message",
@@ -72,6 +60,7 @@ use Illuminate\Routing\Controller as BaseController;
  * 
  *  @OA\Schema(
  *      schema="ForbiddenError",
+ *      title="Forbidden",
  *      description="Forbidden - You don't have permission to access this resource",
  *      @OA\Property(
  *          property="message",
@@ -82,6 +71,7 @@ use Illuminate\Routing\Controller as BaseController;
  *  
  *  @OA\Schema(
  *      schema="NotFoundError",
+ *      title="Not Found",
  *      description="Not Found - The resource you are looking for was not found",
  *      @OA\Property(
  *          property="message",
@@ -92,6 +82,7 @@ use Illuminate\Routing\Controller as BaseController;
  *  
  *  @OA\Schema(
  *      schema="UnprocessableContent",
+ *      title="Unprocessable Content",
  *      description="The request was well-formed but was unable to be followed due to semantic errors.",
  *      @OA\Property(
  *          property="message",

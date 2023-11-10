@@ -42,7 +42,12 @@ trait TraitStore
      *          response=401,
      *          description="Unauthorized",
      *          @OA\JsonContent(ref="#/components/schemas/UnauthorizedError")
-     *      ) 
+     *      ),
+     *      @OA\Response(
+     *        response=422,
+     *        description="Bad Request - One or more errors with the input data",
+     *        @OA\JsonContent(ref="#/components/schemas/BadRequestError")
+     *      )
      * )
      */
     public function store(GroupStoreRequest $request)
