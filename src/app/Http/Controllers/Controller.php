@@ -88,6 +88,15 @@ use Illuminate\Routing\Controller as BaseController;
  *          example="Not Found"
  *      )
  *  )
+ *  @OA\Schema(
+ *      Schema="UnprocessableContent",
+ *      description="The request was well-formed but was unable to be followed due to semantic errors.",
+ *      @OA\Property(
+ *          property="message",
+ *          type="string",
+ *          example="Unprocessable Content"
+ *      )
+ *  )
  *  
  */
 class Controller extends BaseController
