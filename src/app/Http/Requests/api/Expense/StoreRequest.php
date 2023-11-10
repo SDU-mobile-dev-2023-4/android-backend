@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Expense;
+namespace App\Http\Requests\api\Expense;
 
 use Illuminate\Foundation\Http\FormRequest;
 
