@@ -189,7 +189,13 @@ class AuthenticationController extends Controller
      *      @OA\Response(
      *        response=401,
      *        description="Invalid credentials",
-     *        @OA\JsonContent(ref="#/components/schemas/BadRequestError")
+     *        @OA\JsonContent(
+     *              @OA\Property(
+     *                  property="message",
+     *                  type="string",
+     *                  example="Invalid credentials"
+     *              )
+     *        )
      *      ),
      *      @OA\Response(
      *        response=422,

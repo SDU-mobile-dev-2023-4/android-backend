@@ -60,12 +60,7 @@
                                 "schema": {
                                     "allOf": [
                                         {
-                                            "properties": {
-                                                "": {
-                                                    "$ref": "#/components/schemas/Expense"
-                                                }
-                                            },
-                                            "type": "object"
+                                            "$ref": "#/components/schemas/Expense"
                                         }
                                     ]
                                 }
@@ -593,23 +588,9 @@
                     "Authentication"
                 ],
                 "summary": "Login",
-                "description": "This endpoint is used to login.",
+                "description": "This endpoint is used to login a user, by returning a authentication token.",
                 "operationId": "b12e417f73d4e905041e3e87641dca4d",
                 "parameters": [
-                    {
-                        "name": "name",
-                        "in": "query",
-                        "description": "The name of the user",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "maxLength": 255,
-                            "minLength": 1,
-                            "example": "John Doe",
-                            "nullable": false
-                        },
-                        "example": "John Doe"
-                    },
                     {
                         "name": "email",
                         "in": "query",
@@ -683,12 +664,21 @@
                                 "schema": {
                                     "properties": {
                                         "message": {
-                                            "description": "The message returned when the credentials are invalid",
                                             "type": "string",
                                             "example": "Invalid credentials"
                                         }
                                     },
                                     "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Bad Request - One or more errors with the input data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BadRequestError"
                                 }
                             }
                         }
