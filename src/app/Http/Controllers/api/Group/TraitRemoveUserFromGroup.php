@@ -78,7 +78,7 @@ trait TraitRemoveUserFromGroup
      *      ),
      * )
      */
-    public function addUserToGroup(AddUserToGroupRequest $request, Group $group)
+    public function removeUserfromGroup(AddUserToGroupRequest $request, Group $group)
     {
         // Get input data
         $data = $request->validated();
