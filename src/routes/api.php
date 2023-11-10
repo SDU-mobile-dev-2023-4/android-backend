@@ -23,8 +23,8 @@ Route::group(['namespace' => 'App\Http\Controllers\api', 'middleware' => [ 'chec
     Route::apiResource('/users',    'user\UserController');
     Route::apiResource('/expenses', 'Expense\ExpenseController', ['only' => ['store']]);
 
-    Route::post  ('/groups/{group}/user',    'Group\GroupController@addUserToGroup');
-    Route::delete('/groups/{group}/user',    'Group\GroupController@removeUserFromGroup');
+    Route::post  ('/groups/{group}/users',    'Group\GroupController@addUserToGroup');
+    Route::delete('/groups/{group}/users',    'Group\GroupController@removeUserFromGroup');
 });
 
 
