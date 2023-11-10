@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('group_id')->constrained('groups');
             $table->foreignId('payee_id')->constrained('users');
-            $table->foreignId('create_by')->constrained('users');
+            $table->foreignId('created_by')->constrained('users');
             $table->string('name');
             $table->integer('price');
             $table->timestamps();
