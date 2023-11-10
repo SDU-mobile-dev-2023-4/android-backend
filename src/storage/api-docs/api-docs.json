@@ -597,19 +597,45 @@
                 "operationId": "b12e417f73d4e905041e3e87641dca4d",
                 "parameters": [
                     {
-                        "name": "email",
+                        "name": "name",
                         "in": "query",
+                        "description": "The name of the user",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "maxLength": 255,
+                            "minLength": 1,
+                            "example": "John Doe",
+                            "nullable": false
+                        },
+                        "example": "John Doe"
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "The email of the user. Must be unique.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "email",
+                            "maxLength": 255,
+                            "minLength": 2,
+                            "example": "john.doe@example.com",
+                            "nullable": false
                         }
                     },
                     {
                         "name": "password",
                         "in": "query",
+                        "description": "The password of the user",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "format": "password",
+                            "maxLength": 255,
+                            "minLength": 6,
+                            "example": "password",
+                            "nullable": false
                         }
                     },
                     {
@@ -618,7 +644,11 @@
                         "description": "The name of the device",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "maxLength": 255,
+                            "minLength": 2,
+                            "example": "John's iPhone",
+                            "nullable": false
                         }
                     }
                 ],
