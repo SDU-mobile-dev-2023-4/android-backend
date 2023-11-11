@@ -126,7 +126,7 @@ class AuthenticationController extends Controller
      *      path="/api/login",
      *      tags={"Authentication"},
      *      summary="Login",
-     *      description="This endpoint is used to login a user, by returning a authentication token.",
+     *      description="This endpoint is used to login a user. <br><br>You have to provide the following informations: <br>Email <br>Password<br>Device Name: This can be a name of the phone, or a browser name<br><br>The endpoint will return an user object, with a token, the token is a bearer token, which must be attached in the header of all request, this token is used to identify the user, in the system.",
      *      @OA\Parameter(
      *          name="email",
      *          in="query",
