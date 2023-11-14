@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\api\Group;
 
 use App\Helper\Sanitizer;
-use App\Http\Requests\api\Group\AddUserToGroupRequest;
+use App\Http\Requests\api\Expense\GroupStoreExpenseRequest;
 use App\Models\Expense;
 use App\Models\Group;
 use App\Models\User;
@@ -105,7 +105,7 @@ trait TraitAddExpenseToGroup
      *      ),
      * )
      */
-    public function addExpenseToGroup(AddUserToGroupRequest $request, Group $group)
+    public function addExpenseToGroup(GroupStoreExpenseRequest $request, Group $group)
     {
         // Validated data
         $data = $request->validated();

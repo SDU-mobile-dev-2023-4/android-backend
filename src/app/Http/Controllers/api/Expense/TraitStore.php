@@ -7,7 +7,8 @@ use App\Http\Requests\api\Expense\StoreRequest;
 use App\Models\Expense;
 use App\Models\User;
 
-trait TraitStore {
+trait TraitStore
+{
     /**
      * Store a newly created resource in storage.
      * 

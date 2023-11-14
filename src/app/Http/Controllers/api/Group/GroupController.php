@@ -13,4 +13,5 @@ class GroupController extends Controller
     use TraitUpdate;
     use TraitAddUserToGroup;
     use TraitRemoveUserFromGroup;
+    use TraitAddExpenseToGroup;
 }

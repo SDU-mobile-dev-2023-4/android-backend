@@ -18,14 +18,14 @@ use Illuminate\Support\Facades\Route;
  * Routes protected by sanctum
  * auth:sanctum has been removed, as the login verification is done in the CheckAuthentication middleware
  */
-Route::group(['namespace' => 'App\Http\Controllers\api', 'middleware' => [ 'check-auth']], function () {
-    Route::apiResource('/groups',   'Group\GroupController');
-    Route::apiResource('/users',    'user\UserController');
+Route::group(['namespace' => 'App\Http\Controllers\api', 'middleware' => ['check-auth']], function () {
+    Route::apiResource('/groups', 'Group\GroupController');
+    Route::apiResource('/users', 'user\UserController');
     Route::apiResource('/expenses', 'Expense\ExpenseController', ['only' => ['store']]);
 
-    Route::post  ('/groups/{group}/users',    'Group\GroupController@addUserToGroup');
-    Route::delete('/groups/{group}/users',    'Group\GroupController@removeUserFromGroup');
-    Route::post  ('/groups/{group}/expenses', 'Expense\ExpenseController@store');
+    Route::post('/groups/{group}/users', 'Group\GroupController@addUserToGroup');
+    Route::delete('/groups/{group}/users', 'Group\GroupController@removeUserFromGroup');
+    Route::post('/groups/{group}/expenses', 'Group\GroupController@addExpenseToGroup');
 });
 
 
@@ -34,5 +34,5 @@ Route::group(['namespace' => 'App\Http\Controllers\api', 'middleware' => [ 'chec
  */
 Route::group(['namespace' => 'App\Http\Controllers\api'], function () {
     Route::post('/register', 'User\AuthenticationController@register');
-    Route::post('/login',    'User\AuthenticationController@login');
+    Route::post('/login', 'User\AuthenticationController@login');
 });
