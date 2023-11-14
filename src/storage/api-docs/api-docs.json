@@ -14,61 +14,43 @@
                 "summary": "Create a new expense",
                 "description": "This endpoint is used to create a new expense.",
                 "operationId": "expenseStore",
-                "parameters": [
-                    {
-                        "name": "group_id",
-                        "in": "query",
-                        "description": "The id of the group",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "format": "int64",
-                            "example": "1",
-                            "nullable": false
-                        },
-                        "example": "1"
-                    },
-                    {
-                        "name": "payee_id",
-                        "in": "query",
-                        "description": "The id of the payee",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "format": "int64",
-                            "example": "1",
-                            "nullable": false
-                        },
-                        "example": "1"
-                    },
-                    {
-                        "name": "name",
-                        "in": "query",
-                        "description": "The name of the expense",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "maxLength": 255,
-                            "minLength": 1,
-                            "example": "Europe trip",
-                            "nullable": false
-                        },
-                        "example": "Train ticket"
-                    },
-                    {
-                        "name": "price",
-                        "in": "query",
-                        "description": "The price of the expense",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "format": "int64",
-                            "example": "1",
-                            "nullable": false
-                        },
-                        "example": "100"
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "group_id": {
+                                        "description": "The id of the group",
+                                        "type": "integer",
+                                        "example": "1",
+                                        "nullable": false
+                                    },
+                                    "payer_id": {
+                                        "description": "The id of the payer.",
+                                        "type": "integer",
+                                        "example": "1",
+                                        "nullable": false
+                                    },
+                                    "name": {
+                                        "description": "The name of the expense",
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "minLength": 1,
+                                        "example": "Train ticket",
+                                        "nullable": false
+                                    },
+                                    "price": {
+                                        "description": "The price of the expense",
+                                        "type": "integer",
+                                        "example": "100",
+                                        "nullable": false
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
                     }
-                ],
+                },
                 "responses": {
                     "200": {
                         "description": "Expense created successfully",
@@ -81,7 +63,7 @@
                         }
                     },
                     "400": {
-                        "description": "Payee is not in this group",
+                        "description": "Payer is not in this group",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -128,48 +110,39 @@
                             "example": "1",
                             "nullable": false
                         }
-                    },
-                    {
-                        "name": "payee_id",
-                        "in": "query",
-                        "description": "The id of the payee",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "format": "int64",
-                            "example": "1",
-                            "nullable": false
-                        },
-                        "example": "1"
-                    },
-                    {
-                        "name": "name",
-                        "in": "query",
-                        "description": "The name of the expense",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "maxLength": 255,
-                            "minLength": 1,
-                            "example": "Europe trip",
-                            "nullable": false
-                        },
-                        "example": "Train ticket"
-                    },
-                    {
-                        "name": "price",
-                        "in": "query",
-                        "description": "The price of the expense",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "format": "int64",
-                            "example": "1",
-                            "nullable": false
-                        },
-                        "example": "100"
                     }
                 ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "payer_id": {
+                                        "description": "The id of the payer.",
+                                        "type": "integer",
+                                        "example": "1",
+                                        "nullable": false
+                                    },
+                                    "name": {
+                                        "description": "The name of the expense",
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "minLength": 1,
+                                        "example": "Train ticket",
+                                        "nullable": false
+                                    },
+                                    "price": {
+                                        "description": "The price of the expense",
+                                        "type": "integer",
+                                        "example": "100",
+                                        "nullable": false
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Expense added to group successfully",
@@ -259,22 +232,27 @@
                             "example": "1",
                             "nullable": false
                         }
-                    },
-                    {
-                        "name": "email",
-                        "in": "query",
-                        "description": "The email of the user.",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "format": "email",
-                            "maxLength": 255,
-                            "minLength": 2,
-                            "example": "john.doe@example.com",
-                            "nullable": false
-                        }
                     }
                 ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "description": "The email of the user.",
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "minLength": 2,
+                                        "example": "john.doe@example.com",
+                                        "nullable": false
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "User added to group successfully",
@@ -362,22 +340,27 @@
                             "example": "1",
                             "nullable": false
                         }
-                    },
-                    {
-                        "name": "email",
-                        "in": "query",
-                        "description": "The email of the user.",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "format": "email",
-                            "maxLength": 255,
-                            "minLength": 2,
-                            "example": "john.doe@example.com",
-                            "nullable": false
-                        }
                     }
                 ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "description": "The email of the user.",
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "minLength": 2,
+                                        "example": "john.doe@example.com",
+                                        "nullable": false
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "User remove from group successfully",
@@ -536,22 +519,26 @@
                             "example": "1",
                             "nullable": false
                         }
-                    },
-                    {
-                        "name": "name",
-                        "in": "query",
-                        "description": "The name of the group",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "maxLength": 255,
-                            "minLength": 1,
-                            "example": "Europe trip",
-                            "nullable": false
-                        },
-                        "example": "Europe trip"
                     }
                 ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "description": "The name of the group",
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "example": "Europe trip",
+                                        "nullable": false
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Group updated successfully",
@@ -742,22 +729,24 @@
                 "summary": "Create a new group",
                 "description": "This endpoint is used to create a new group.",
                 "operationId": "grouStore",
-                "parameters": [
-                    {
-                        "name": "name",
-                        "in": "query",
-                        "description": "The name of the group",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "maxLength": 255,
-                            "minLength": 1,
-                            "example": "Europe trip",
-                            "nullable": false
-                        },
-                        "example": "Europe trip"
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "description": "The name of the group",
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "example": "Europe trip",
+                                        "nullable": false
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
                     }
-                ],
+                },
                 "responses": {
                     "200": {
                         "description": "Group created successfully",
@@ -805,63 +794,45 @@
                 "summary": "Register",
                 "description": "This endpoint is used to register a new user.",
                 "operationId": "6cd4a8afb20be55c12cf820331f54ce4",
-                "parameters": [
-                    {
-                        "name": "name",
-                        "in": "query",
-                        "description": "The name of the user",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "maxLength": 255,
-                            "minLength": 1,
-                            "example": "John Doe",
-                            "nullable": false
-                        },
-                        "example": "John Doe"
-                    },
-                    {
-                        "name": "email",
-                        "in": "query",
-                        "description": "The email of the user. Must be unique.",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "format": "email",
-                            "maxLength": 255,
-                            "minLength": 2,
-                            "example": "john.doe@example.com",
-                            "nullable": false
-                        }
-                    },
-                    {
-                        "name": "password",
-                        "in": "query",
-                        "description": "The password of the user",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "format": "password",
-                            "maxLength": 255,
-                            "minLength": 6,
-                            "example": "password",
-                            "nullable": false
-                        }
-                    },
-                    {
-                        "name": "device_name",
-                        "in": "query",
-                        "description": "The name of the device",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "maxLength": 255,
-                            "minLength": 2,
-                            "example": "John's iPhone",
-                            "nullable": false
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "description": "User name",
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "example": "John Doe",
+                                        "nullable": false
+                                    },
+                                    "email": {
+                                        "description": "User email",
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "example": "demo@example.com",
+                                        "nullable": false
+                                    },
+                                    "password": {
+                                        "description": "User password",
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "example": "password",
+                                        "nullable": false
+                                    },
+                                    "device_name": {
+                                        "description": "The name of the device",
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "example": "John's iPhone",
+                                        "nullable": false
+                                    }
+                                },
+                                "type": "object"
+                            }
                         }
                     }
-                ],
+                },
                 "responses": {
                     "200": {
                         "description": "User created successfully",
@@ -907,49 +878,35 @@
                 "summary": "Login",
                 "description": "This endpoint is used to login a user. <br><br>You have to provide the following informations: <br>Email <br>Password<br>Device Name: This can be a name of the phone, or a browser name<br><br>The endpoint will return an user object, with a token, the token is a bearer token, which must be attached in the header of all request, this token is used to identify the user, in the system.",
                 "operationId": "b12e417f73d4e905041e3e87641dca4d",
-                "parameters": [
-                    {
-                        "name": "email",
-                        "in": "query",
-                        "description": "The email of the user.",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "format": "email",
-                            "maxLength": 255,
-                            "minLength": 2,
-                            "example": "john.doe@example.com",
-                            "nullable": false
-                        }
-                    },
-                    {
-                        "name": "password",
-                        "in": "query",
-                        "description": "The password of the user",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "format": "password",
-                            "maxLength": 255,
-                            "minLength": 6,
-                            "example": "password",
-                            "nullable": false
-                        }
-                    },
-                    {
-                        "name": "device_name",
-                        "in": "query",
-                        "description": "The name of the device",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "maxLength": 255,
-                            "minLength": 2,
-                            "example": "John's iPhone",
-                            "nullable": false
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "description": "User email",
+                                        "type": "string",
+                                        "example": "demo@example.com",
+                                        "nullable": false
+                                    },
+                                    "password": {
+                                        "description": "User password",
+                                        "type": "string",
+                                        "example": "password",
+                                        "nullable": false
+                                    },
+                                    "device_name": {
+                                        "description": "The name of the device",
+                                        "type": "string",
+                                        "example": "John's iPhone",
+                                        "nullable": false
+                                    }
+                                },
+                                "type": "object"
+                            }
                         }
                     }
-                ],
+                },
                 "responses": {
                     "200": {
                         "description": "Group response",
@@ -1087,8 +1044,8 @@
                         "type": "integer",
                         "example": "1"
                     },
-                    "payee_id": {
-                        "description": "Payee id",
+                    "payer_id": {
+                        "description": "Payer id",
                         "type": "integer",
                         "example": "1"
                     },

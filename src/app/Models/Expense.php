@@ -23,9 +23,9 @@ use Laravel\Sanctum\HasApiTokens;
  *         example="1"
  *     ),
  *     @OA\Property(
- *         property="payee_id",
+ *         property="payer_id",
  *         type="integer",
- *         description="Payee id",
+ *         description="Payer id",
  *         example="1"
  *     ),
  *     @OA\Property(

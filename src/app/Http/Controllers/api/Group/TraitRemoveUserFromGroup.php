@@ -32,20 +32,24 @@ trait TraitRemoveUserFromGroup
      *              nullable=false,
      *          ),
      *     ),
-     *     @OA\Parameter(
-     *          name="email",
-     *          in="query",
-     *          required=true,
-     *          description="The email of the user.",
-     *          @OA\Schema(
-     *              type="string",
-     *              format="email",
-     *              example="john.doe@example.com",
-     *              nullable=false,
-     *              minLength=2,
-     *              maxLength=255
-     *          ),
+     *     
+     *     @OA\RequestBody(
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  @OA\Property(
+     *                      property="email",
+     *                      type="string",
+     *                      description="The email of the user.",
+     *                      example="john.doe@example.com",
+     *                      nullable=false,
+     *                      minLength=2,
+     *                      maxLength=255
+     *                  ),
+     *              )
+     *          )
      *      ),
+     *      
      *      @OA\Response(
      *         response=200,
      *         description="User remove from group successfully",

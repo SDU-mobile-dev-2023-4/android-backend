@@ -23,7 +23,7 @@ class StoreRequest extends FormRequest
     {
         return [
             'group_id' => 'required|exists:groups,id',
-            'payee_id' => 'required|exists:users,id',
+            'payer_id' => 'required|exists:users,id',
             'name' => 'required|string|max:255',
             'price' => 'required|integer',
         ];

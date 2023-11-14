@@ -19,19 +19,20 @@ trait TraitStore
      *      operationId="grouStore",
      *      security={{"bearerAuth":{}}},
      *      
-     *      @OA\Parameter(
-     *          name="name",
-     *          in="query",
-     *          required=true,
-     *          description="The name of the group",
-     *          example="Europe trip",
-     *          @OA\Schema(
-     *            type="string",
-     *            minLength=1,
-     *            maxLength=255,
-     *            example="Europe trip",
-     *            nullable=false
-     *          ),
+     *      @OA\RequestBody(
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  @OA\Property(
+     *                      property="name",
+     *                      type="string",
+     *                      description="The name of the group",
+     *                      example="Europe trip",
+     *                      nullable=false,
+     *                      maxLength=255
+     *                  ),
+     *              )
+     *          )
      *      ),
      *      @OA\Response(
      *          response=200,

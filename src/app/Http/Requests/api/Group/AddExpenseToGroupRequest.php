@@ -22,7 +22,7 @@ class AddExpenseToGroupRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'payee_id' => 'required|exists:users,id',
+            'payer_id' => 'required|exists:users,id',
             'name' => 'required|string|max:255',
             'price' => 'required|integer',
         ];

@@ -17,59 +17,43 @@ class AuthenticationController extends Controller
      *      tags={"Authentication"},
      *      summary="Register",
      *      description="This endpoint is used to register a new user.",
-     *      @OA\Parameter(
-     *          name="name",
-     *          in="query",
-     *          required=true,
-     *          description="The name of the user",
-     *          example="John Doe",
-     *          @OA\Schema(
-     *            type="string",
-     *            minLength=1,
-     *            maxLength=255,
-     *            example="John Doe",
-     *            nullable=false
-     *          ),
-     *      ),
-     *      @OA\Parameter(
-     *          name="email",
-     *          in="query",
-     *          required=true,
-     *          description="The email of the user. Must be unique.",
-     *          @OA\Schema(
-     *              type="string",
-     *              format="email",
-     *              example="john.doe@example.com",
-     *              nullable=false,
-     *              minLength=2,
-     *              maxLength=255
-     *          ),
-     *      ),
-     *      @OA\Parameter(
-     *          name="password",
-     *          in="query",
-     *          required=true,
-     *          description="The password of the user",
-     *          @OA\Schema(
-     *              type="string",
-     *              format="password",
-     *              minLength=6,
-     *              maxLength=255,
-     *              example="password",
-     *              nullable=false
-     *          ),    
-     *      ),
-     *      @OA\Parameter(
-     *          name="device_name",
-     *          in="query",
-     *          required=true,
-     *          description="The name of the device",
-     *          @OA\Schema(
-     *              type="string",
-     *              minLength=2,
-     *              maxLength=255,
-     *              example="John's iPhone",
-     *              nullable=false
+     *      @OA\RequestBody(
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  @OA\Property(
+     *                      property="name",
+     *                      type="string",
+     *                      description="User name",
+     *                      example="John Doe",
+     *                      nullable=false,
+     *                      maxLength=255
+     *                  ),
+     *                  @OA\Property(
+     *                      property="email",
+     *                      type="string",
+     *                      description="User email",
+     *                      example="demo@example.com",
+     *                      nullable=false,
+     *                      maxLength=255
+     *                  ),
+     *                  @OA\Property(
+     *                      property="password",
+     *                      type="string",
+     *                      description="User password",
+     *                      example="password",
+     *                      nullable=false,
+     *                      maxLength=255
+     *                  ),
+     *                  @OA\Property(
+     *                      property="device_name",
+     *                      type="string",
+     *                      description="The name of the device",
+     *                      example="John's iPhone",
+     *                      nullable=false,
+     *                      maxLength=255
+     *                  )
+     *              )
      *          )
      *      ),
      *      @OA\Response(
@@ -127,45 +111,32 @@ class AuthenticationController extends Controller
      *      tags={"Authentication"},
      *      summary="Login",
      *      description="This endpoint is used to login a user. <br><br>You have to provide the following informations: <br>Email <br>Password<br>Device Name: This can be a name of the phone, or a browser name<br><br>The endpoint will return an user object, with a token, the token is a bearer token, which must be attached in the header of all request, this token is used to identify the user, in the system.",
-     *      @OA\Parameter(
-     *          name="email",
-     *          in="query",
-     *          required=true,
-     *          description="The email of the user.",
-     *          @OA\Schema(
-     *              type="string",
-     *              format="email",
-     *              example="john.doe@example.com",
-     *              nullable=false,
-     *              minLength=2,
-     *              maxLength=255
-     *          ),
-     *      ),
-     *      @OA\Parameter(
-     *          name="password",
-     *          in="query",
-     *          required=true,
-     *          description="The password of the user",
-     *          @OA\Schema(
-     *              type="string",
-     *              format="password",
-     *              minLength=6,
-     *              maxLength=255,
-     *              example="password",
-     *              nullable=false
-     *          ),    
-     *      ),
-     *      @OA\Parameter(
-     *          name="device_name",
-     *          in="query",
-     *          required=true,
-     *          description="The name of the device",
-     *          @OA\Schema(
-     *              type="string",
-     *              minLength=2,
-     *              maxLength=255,
-     *              example="John's iPhone",
-     *              nullable=false
+     *      @OA\RequestBody(
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  @OA\Property(
+     *                      property="email",
+     *                      type="string",
+     *                      description="User email",
+     *                      example="demo@example.com",
+     *                      nullable=false
+     *                  ),
+     *                  @OA\Property(
+     *                      property="password",
+     *                      type="string",
+     *                      description="User password",
+     *                      example="password",
+     *                      nullable=false
+     *                  ),
+     *                  @OA\Property(
+     *                      property="device_name",
+     *                      type="string",
+     *                      description="The name of the device",
+     *                      example="John's iPhone",
+     *                      nullable=false
+     *                  )
+     *              )
      *          )
      *      ),
      *      @OA\Response(
