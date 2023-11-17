@@ -112,6 +112,10 @@ trait TraitAddUserToGroup
         }
 
         // Check if the new user is already member of the group
+        if ($group->users()->where('email', $emailToAdd)->exists()) {
+            return response()->json(['message' => 'User is already member of the group'], 400);
+        }
+        /*
         if ($group->email($emailToAdd)->exists()) {
             return response()->json([
                 'message' => 'User is already member of the group',
@@ -122,6 +126,7 @@ trait TraitAddUserToGroup
                 ]
             ], 400);
         }
+        */
 
         // Add the new user to the group
         $group->users()->attach($userToAdd->id);
