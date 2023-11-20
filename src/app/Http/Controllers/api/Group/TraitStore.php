@@ -31,6 +31,14 @@ trait TraitStore
      *                      nullable=false,
      *                      maxLength=255
      *                  ),
+     *                  @OA\Property(
+     *                      property="description",
+     *                      type="string",
+     *                      description="The description of the group",
+     *                      example="Europe trip description",
+     *                      nullable=true,
+     *                      maxLength=255
+     *                  ),
      *              )
      *          )
      *      ),
@@ -62,6 +70,7 @@ trait TraitStore
         // Create group
         $group = new Group();
         $group->name = Sanitizer::sanitize($data['name']);
+        $group->description = Sanitizer::sanitize($data['description']);
         $group->save();
 
         // Attach default user

@@ -24,6 +24,12 @@ use Laravel\Sanctum\HasApiTokens;
  *      example="Group 1"
  *  ),
  *  @OA\Property(
+ *      property="description",
+ *      type="string",
+ *      description="short description of the group",
+ *      example="Group 1 description"
+ *  ),
+ *  @OA\Property(
  *      property="created_at",
  *      type="string",
  *      format="date-time",
@@ -87,7 +93,7 @@ class Group extends Model
 
     public function expenses()
     {
-        return $this->hasMany(Expense::class);
+        return $this->hasMany(Expense::class, );
     }
 
     /**

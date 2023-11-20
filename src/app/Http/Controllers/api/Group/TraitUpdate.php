@@ -43,6 +43,14 @@ trait TraitUpdate
      *                      nullable=false,
      *                      maxLength=255
      *                  ),
+     *                  @OA\Property(
+     *                      property="description",
+     *                      type="string",
+     *                      description="The description of the group",
+     *                      example="Europe trip description",
+     *                      nullable=true,
+     *                      maxLength=255
+     *                  ),
      *              )
      *          )
      *      ),
@@ -89,6 +97,7 @@ trait TraitUpdate
 
         // Update group
         $group->name = Sanitizer::sanitize($data['name']);
+        $group->description = Sanitizer::sanitize($data['description']);
         $group->save();
 
         // Prepare response
