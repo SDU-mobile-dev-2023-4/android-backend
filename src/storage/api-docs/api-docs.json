@@ -532,6 +532,13 @@
                                         "maxLength": 255,
                                         "example": "Europe trip",
                                         "nullable": false
+                                    },
+                                    "description": {
+                                        "description": "The description of the group",
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "example": "Europe trip description",
+                                        "nullable": true
                                     }
                                 },
                                 "type": "object"
@@ -740,6 +747,13 @@
                                         "maxLength": 255,
                                         "example": "Europe trip",
                                         "nullable": false
+                                    },
+                                    "description": {
+                                        "description": "The description of the group",
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "example": "Europe trip description",
+                                        "nullable": true
                                     }
                                 },
                                 "type": "object"
@@ -1091,6 +1105,11 @@
                         "description": "Group name",
                         "type": "string",
                         "example": "Group 1"
+                    },
+                    "description": {
+                        "description": "short description of the group",
+                        "type": "string",
+                        "example": "Group 1 description"
                     },
                     "created_at": {
                         "description": "Date and time of creation",
