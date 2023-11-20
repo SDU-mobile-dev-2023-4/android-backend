@@ -97,7 +97,7 @@ trait TraitUpdate
 
         // Update group
         $group->name = Sanitizer::sanitize($data['name']);
-        $group->description = Sanitizer::sanitize($data['description']);
+        $group->description = $data["description"] ? Sanitizer::sanitize($data['description']) : "";
         $group->save();
 
         // Prepare response

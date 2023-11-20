@@ -70,7 +70,7 @@ trait TraitStore
         // Create group
         $group = new Group();
         $group->name = Sanitizer::sanitize($data['name']);
-        $group->description = Sanitizer::sanitize($data['description']);
+        $group->description = $data["description"] ? Sanitizer::sanitize($data['description']) : "";
         $group->save();
 
         // Attach default user
