@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Expense;
+use App\Models\GroupUser;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -12,6 +14,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->register(\L5Swagger\L5SwaggerServiceProvider::class);
+
     }
 
     /**
@@ -19,6 +22,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Observers
+        Expense::observe(\App\Observers\ExpenseObserver::class);
+        GroupUser::observe(\App\Observers\GroupUserObserver::class);
     }
 }
