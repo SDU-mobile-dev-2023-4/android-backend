@@ -325,7 +325,7 @@
                 "tags": [
                     "Groups"
                 ],
-                "summary": "Remoev a user from a group",
+                "summary": "Remove a user from a group",
                 "description": "This endpoint is used to remove a user from a group.",
                 "operationId": "RemoveUserFromGroup",
                 "parameters": [
@@ -800,6 +800,41 @@
                 ]
             }
         },
+        "/api/notifications": {
+            "get": {
+                "tags": [
+                    "Notifications"
+                ],
+                "summary": "Get notifications",
+                "description": "Get the oldest 5 notifications visible to the authenticated user, that is, all notifications that have not been read yet. There may be no notifications at all.",
+                "operationId": "notificationIndex",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "notifications": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Notification"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/register": {
             "post": {
                 "tags": [
@@ -1045,6 +1080,65 @@
                 },
                 "type": "object"
             },
+            "Notification": {
+                "properties": {
+                    "id": {
+                        "description": "The id of the notification, formatted as a UUID.",
+                        "type": "string",
+                        "format": "uuid",
+                        "example": "123e4567-e89b-12d3-a456-426614174000"
+                    },
+                    "type": {
+                        "description": "The type of the notification.",
+                        "type": "string",
+                        "example": "App\\Notifications\\ExpenseAdded"
+                    },
+                    "notifiable_type": {
+                        "description": "The type of the notifiable model.",
+                        "type": "string",
+                        "example": "App\\Models\\User"
+                    },
+                    "notifiable_id": {
+                        "description": "The id of the notifiable model. This would usually be the id of the authenticated user.",
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "data": {
+                        "description": "The data of the notification. This data is dynamic according to the type of the notification.",
+                        "type": "object",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/ExpenseAddedNotification"
+                            },
+                            {
+                                "$ref": "#/components/schemas/AddedToGroupNotification"
+                            },
+                            {
+                                "$ref": "#/components/schemas/RemovedFromGroupNotification"
+                            }
+                        ]
+                    },
+                    "read_at": {
+                        "description": "The date and time when the notification was read.",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2020-01-01 00:00:00"
+                    },
+                    "created_at": {
+                        "description": "The date and time when the notification was created.",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2020-01-01 00:00:00"
+                    },
+                    "updated_at": {
+                        "description": "The date and time when the notification was updated.",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2020-01-01 00:00:00"
+                    }
+                },
+                "type": "object"
+            },
             "Expense": {
                 "title": "Expense schema",
                 "properties": {
@@ -1192,6 +1286,48 @@
                         "type": "string",
                         "example": "2021-01-01 00:00:00",
                         "nullable": false
+                    }
+                },
+                "type": "object"
+            },
+            "AddedToGroupNotification": {
+                "title": "Added to group notification (App\\Notifications\\AddedToGroup)",
+                "properties": {
+                    "group": {
+                        "$ref": "#/components/schemas/Group"
+                    },
+                    "added_by": {
+                        "$ref": "#/components/schemas/User"
+                    }
+                },
+                "type": "object"
+            },
+            "ExpenseAddedNotification": {
+                "title": "Expense added notification (App\\Notifications\\ExpenseAdded)",
+                "properties": {
+                    "expense": {
+                        "$ref": "#/components/schemas/Expense"
+                    },
+                    "group": {
+                        "$ref": "#/components/schemas/Group"
+                    },
+                    "created_by": {
+                        "$ref": "#/components/schemas/User"
+                    },
+                    "payer": {
+                        "$ref": "#/components/schemas/User"
+                    }
+                },
+                "type": "object"
+            },
+            "RemovedFromGroupNotification": {
+                "title": "Removed from group notification (App\\Notifications\\RemovedFromGroup)",
+                "properties": {
+                    "group": {
+                        "$ref": "#/components/schemas/Group"
+                    },
+                    "removed_by": {
+                        "$ref": "#/components/schemas/User"
                     }
                 },
                 "type": "object"
