@@ -14,7 +14,7 @@ trait TraitRemoveUserFromGroup
      * Remove a user with a specific email from the group.
      *
      * @OA\Delete(
-     *     path="/api/groups/{group-id}/users/{user-id}",
+     *     path="/api/groups/{id}/users/{uid}",
      *     tags={"Groups"},
      *     summary="Remove a user from a group",
      *     description="This endpoint is used to remove a user from a group.",
@@ -22,10 +22,10 @@ trait TraitRemoveUserFromGroup
      *     security={{"bearerAuth":{}}},
      *     
      *     @OA\Parameter(
-     *          name="group-id",
+     *          name="id",
      *          in="path",
      *          required=true,
-     *          description="The if of the group",
+     *          description="The id of the group",
      *          @OA\Schema(
      *              type="integer",
      *              format="int64",
@@ -35,7 +35,7 @@ trait TraitRemoveUserFromGroup
      *     ),
      *     
      *     @OA\Parameter(
-     *          name="user-id",
+     *          name="uid",
      *          in="path",
      *          required=true,
      *          description="The id of the user to remove from the group",

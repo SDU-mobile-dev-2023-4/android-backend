@@ -692,7 +692,7 @@
                 ]
             }
         },
-        "/api/groups/{id}/users/{id}": {
+        "/api/groups/{id}/users/{uid}": {
             "delete": {
                 "tags": [
                     "Groups"
@@ -704,7 +704,7 @@
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "The first id is the id for the group",
+                        "description": "The id of the group",
                         "required": true,
                         "schema": {
                             "type": "integer",
@@ -714,9 +714,9 @@
                         }
                     },
                     {
-                        "name": "id",
+                        "name": "uid",
                         "in": "path",
-                        "description": "The second id is the id for the user",
+                        "description": "The id of the user to remove from the group",
                         "required": true,
                         "schema": {
                             "type": "integer",
