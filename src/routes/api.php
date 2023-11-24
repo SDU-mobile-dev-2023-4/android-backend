@@ -26,6 +26,7 @@ Route::group(['namespace' => 'App\Http\Controllers\api', 'middleware' => [ 'chec
     Route::post  ('/groups/{group}/users',    'Group\GroupController@addUserToGroup');
     Route::delete('/groups/{group}/users',    'Group\GroupController@removeUserFromGroup');
     Route::post  ('/groups/{group}/expenses', 'Group\GroupController@addExpenseToGroup');
+    Route::post  ('/groups/{group}/notify',   'Group\GroupController@notify');
 
     Route::get('/notifications', 'Notification\NotificationController@index');
 });
