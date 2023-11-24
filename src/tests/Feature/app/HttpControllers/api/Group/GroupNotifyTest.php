@@ -36,8 +36,6 @@ class GroupNotifyTest extends TestCase
         ]);
         $user->save();
 
-        \Auth::login($user, 'sanctum');
-
         // Add the user to the group
         $group->users()->attach($user->id);
 
@@ -110,6 +108,30 @@ class GroupNotifyTest extends TestCase
 
         // Check that the response is correct
         $response->assertStatus(403);
+
+        // Check that the group members have not been notified
+        $this->assertDatabaseMissing('notifications', [
+            'type' => 'App\\Notifications\\MissingPayment',
+            'notifiable_id' => $this->user2->id,
+            'notifiable_type' => 'App\Models\User',
+        ]);
+        $this->assertDatabaseMissing('notifications', [
+            'type' => 'App\\Notifications\\MissingPayment',
+        ]);
+    }
+
+    /**
+     * Test that it is not possible to notify the group members if the user is not logged in.
+     */
+    public function test_it_is_not_possible_to_notify_the_group_members_if_the_user_is_not_logged_in(): void
+    {
+        $this->assertFalse(auth('sanctum')->check());
+
+        // Notify the group members
+        $response = $this->postJson('/api/groups/' . $this->group->id . '/notify');
+
+        // Check that the response is correct
+        $response->assertStatus(401);
 
         // Check that the group members have not been notified
         $this->assertDatabaseMissing('notifications', [

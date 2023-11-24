@@ -15,6 +15,9 @@ class GroupUserObserver
 
         // Get the current authenticated user.
         $addedBy = auth('sanctum')->user();
+        if (!$addedBy) {
+            return;
+        }
 
         // If the current authenticated user is the new group member, don't notify them.
         if ($addedBy->id === $user->id) {
@@ -36,7 +39,11 @@ class GroupUserObserver
 
         // Get the current authenticated user.
         $removedBy = auth('sanctum')->user();
+        if (!$removedBy) {
+            return;
+        }
 
+        // If the current authenticated user is the group member, don't notify them.
         if ($removedBy->id === $user->id) {
             return;
         }
