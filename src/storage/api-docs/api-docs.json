@@ -320,114 +320,6 @@
                         "bearerAuth": []
                     }
                 ]
-            },
-            "delete": {
-                "tags": [
-                    "Groups"
-                ],
-                "summary": "Remove a user from a group",
-                "description": "This endpoint is used to remove a user from a group.",
-                "operationId": "RemoveUserFromGroup",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "The id of the group",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "format": "int64",
-                            "example": "1",
-                            "nullable": false
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "email": {
-                                        "description": "The email of the user.",
-                                        "type": "string",
-                                        "maxLength": 255,
-                                        "minLength": 2,
-                                        "example": "john.doe@example.com",
-                                        "nullable": false
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "User remove from group successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/GroupWithUsersAndExpenses"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/BadRequestError"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/UnauthorizedError"
-                                }
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ForbiddenError"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/NotFoundError"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Bad Request - One or more errors with the input data",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/BadRequestError"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
             }
         },
         "/api/groups/{id}": {
@@ -800,6 +692,109 @@
                 ]
             }
         },
+        "/api/groups/{id}/users/{uid}": {
+            "delete": {
+                "tags": [
+                    "Groups"
+                ],
+                "summary": "Remove a user from a group",
+                "description": "This endpoint is used to remove a user from a group.",
+                "operationId": "RemoveUserFromGroup",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The id of the group",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64",
+                            "example": "1",
+                            "nullable": false
+                        }
+                    },
+                    {
+                        "name": "uid",
+                        "in": "path",
+                        "description": "The id of the user to remove from the group",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64",
+                            "example": "1",
+                            "nullable": false
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User remove from group successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GroupWithUsersAndExpenses"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BadRequestError"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UnauthorizedError"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ForbiddenError"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NotFoundError"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Bad Request - One or more errors with the input data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BadRequestError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/notifications": {
             "get": {
                 "tags": [
@@ -823,6 +818,16 @@
                                         }
                                     },
                                     "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UnauthorizedError"
                                 }
                             }
                         }
@@ -1291,7 +1296,7 @@
                 "type": "object"
             },
             "AddedToGroupNotification": {
-                "title": "Added to group notification (App\\Notifications\\AddedToGroup)",
+                "title": "Added to group notification (App\\\\Notifications\\\\AddedToGroup)",
                 "properties": {
                     "group": {
                         "$ref": "#/components/schemas/Group"
@@ -1303,7 +1308,7 @@
                 "type": "object"
             },
             "ExpenseAddedNotification": {
-                "title": "Expense added notification (App\\Notifications\\ExpenseAdded)",
+                "title": "Expense added notification (App\\\\Notifications\\\\ExpenseAdded)",
                 "properties": {
                     "expense": {
                         "$ref": "#/components/schemas/Expense"
@@ -1321,7 +1326,7 @@
                 "type": "object"
             },
             "RemovedFromGroupNotification": {
-                "title": "Removed from group notification (App\\Notifications\\RemovedFromGroup)",
+                "title": "Removed from group notification (App\\\\Notifications\\\\RemovedFromGroup)",
                 "properties": {
                     "group": {
                         "$ref": "#/components/schemas/Group"
