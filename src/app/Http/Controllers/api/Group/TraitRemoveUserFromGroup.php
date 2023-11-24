@@ -6,6 +6,7 @@ use App\Helper\Sanitizer;
 use App\Http\Requests\api\Group\AddUserToGroupRequest;
 use App\Models\Group;
 use App\Models\User;
+use Illuminate\Http\Request;
 
 trait TraitRemoveUserFromGroup
 {
@@ -13,7 +14,7 @@ trait TraitRemoveUserFromGroup
      * Remove a user with a specific email from the group.
      *
      * @OA\Delete(
-     *     path="/api/groups/{id}/users",
+     *     path="/api/groups/{id}/users/{id}",
      *     tags={"Groups"},
      *     summary="Remove a user from a group",
      *     description="This endpoint is used to remove a user from a group.",
@@ -24,7 +25,7 @@ trait TraitRemoveUserFromGroup
      *          name="id",
      *          in="path",
      *          required=true,
-     *          description="The id of the group",
+     *          description="The first id is the id for the group",
      *          @OA\Schema(
      *              type="integer",
      *              format="int64",
@@ -33,20 +34,16 @@ trait TraitRemoveUserFromGroup
      *          ),
      *     ),
      *     
-     *     @OA\RequestBody(
-     *          @OA\MediaType(
-     *              mediaType="application/json",
-     *              @OA\Schema(
-     *                  @OA\Property(
-     *                      property="email",
-     *                      type="string",
-     *                      description="The email of the user.",
-     *                      example="john.doe@example.com",
-     *                      nullable=false,
-     *                      minLength=2,
-     *                      maxLength=255
-     *                  ),
-     *              )
+     *     @OA\Parameter(
+     *          name="id",
+     *          in="path",
+     *          required=true,
+     *          description="The second id is the id for the user",
+     *          @OA\Schema(
+     *              type="integer",
+     *              format="int64",
+     *              example="1",
+     *              nullable=false,
      *          )
      *      ),
      *      
@@ -82,10 +79,10 @@ trait TraitRemoveUserFromGroup
      *      ),
      * )
      */
-    public function removeUserfromGroup(AddUserToGroupRequest $request, Group $group)
+    public function removeUserfromGroup(Request $request, Group $group, User $user)
     {
-        // Get input data
-        $data = $request->validated();
+        $userToRemove = $user;
+        unset($user);
 
         // Get user
         $user = auth('sanctum')->user();
@@ -95,12 +92,8 @@ trait TraitRemoveUserFromGroup
             return response()->json(['message' => 'You are not authorized to add users to this group'], 403);
         }
 
-        // Get the email from the request
-        $emailToAdd = Sanitizer::sanitize($data['email']);
-
         // Check if the user exists
-        $userToAdd = User::where('email', $emailToAdd)->first();
-        if (!$user) {
+        if (!$userToRemove) {
             return response()->json([
                 'message' => 'User not found',
                 'errors' => [
@@ -111,10 +104,9 @@ trait TraitRemoveUserFromGroup
             ], 400);
         }
 
-        // Check if the user is already member of the group
-        if ($group->email($emailToAdd)->exists()) {
-            // Remove the user from the group
-            $group->users()->detach($userToAdd->id);
+        // Check if user is already member of the group, if so, remove the user from the group
+        if ($group->user($userToRemove->id)->exists()) {
+            $group->users()->detach($userToRemove->id);
         }
 
         // Prepare response
