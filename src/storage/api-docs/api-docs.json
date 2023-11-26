@@ -692,6 +692,80 @@
                 ]
             }
         },
+        "/api/groups/{id}/notify": {
+            "post": {
+                "tags": [
+                    "Groups"
+                ],
+                "summary": "Notify group members of unpaid expenses",
+                "description": "This endpoint is used to notify group members of unpaid expenses, which are manually added by the user.",
+                "operationId": "groupNotify",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Group id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64",
+                            "example": "1",
+                            "nullable": false
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Group notified successfully"
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UnauthorizedError"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "You are not authorized to edit this group",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ForbiddenError"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Group not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NotFoundError"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Bad Request - One or more errors with the input data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BadRequestError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/groups/{id}/users/{uid}": {
             "delete": {
                 "tags": [
@@ -1320,6 +1394,18 @@
                         "$ref": "#/components/schemas/User"
                     },
                     "payer": {
+                        "$ref": "#/components/schemas/User"
+                    }
+                },
+                "type": "object"
+            },
+            "MissingPaymentNotification": {
+                "title": "Missing payment notification (App\\\\Notifications\\\\MissingPayment)",
+                "properties": {
+                    "group": {
+                        "$ref": "#/components/schemas/Group"
+                    },
+                    "added_by": {
                         "$ref": "#/components/schemas/User"
                     }
                 },

@@ -11,7 +11,7 @@ trait TraitNotify
     /**
      * Update the specified resource in storage.
      * 
-     * @OA\Put(
+     * @OA\Post(
      *      path="/api/groups/{id}/notify",
      *      tags={"Groups"},
      *      summary="Notify group members of unpaid expenses",
